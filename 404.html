@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en" data-runtime="player">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#dfe7ec" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="JB_Drill Player" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>JB_Drill Player</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./player.css" />
+  </head>
+  <body>
+    <section class="player-welcome" id="playerWelcome" aria-labelledby="playerWelcomeTitle" hidden>
+      <div class="player-welcome-card" id="playerDropZone">
+        <img src="./icons/app-icon-192.png" alt="JB Drill" />
+        <div>
+          <p class="player-eyebrow">JB_Drill</p>
+          <h1 id="playerWelcomeTitle">Player</h1>
+          <p>Open a shared drill or practice session. The file stays on this device.</p>
+        </div>
+        <button class="player-open-button" id="playerWelcomeOpenButton" type="button">Open .jbplay</button>
+        <small>Choose a file or drop it anywhere on this page.</small>
+      </div>
+    </section>
+    <header class="player-header" id="playerHeader" hidden>
+      <div class="player-brand">
+        <img src="./icons/app-icon-192.png" alt="" />
+        <span><strong>JB_Drill</strong><small>Player</small></span>
+      </div>
+      <strong class="player-document-title" id="playerDocumentTitle">No file open</strong>
+      <div class="player-header-actions">
+        <button id="playerNotesButton" type="button" aria-expanded="false">Notes</button>
+        <button class="player-open-button" id="playerOpenButton" type="button">Open .jbplay</button>
+      </div>
+    </header>
+    <input id="playerImportInput" type="file" accept=".jbplay,application/vnd.bybartonek.jbplay,application/json" hidden />
+    <main class="app-shell">
+      <section class="shelf" aria-label="Tools">
+        <div class="shelf-scroll" id="toolSections">
+          <div class="tool-group">
+            <span class="group-label">Objects</span>
+            <button class="tool-button object-tool" type="button" data-object="attacker" aria-label="Player">
+              <span class="object-icon attacker-icon"></span>
+              <span>Player</span>
+            </button>
+            <button class="tool-button object-tool" type="button" data-object="defender" aria-label="Defense">
+              <span class="object-icon defender-icon"></span>
+              <span>Defense</span>
+            </button>
+            <button class="tool-button object-tool" type="button" data-object="puck" aria-label="Puck">
+              <img class="object-icon sandbox-item-art puck-icon" src="./icons/Puck.png" alt="" draggable="false" />
+              <span>Puck</span>
+            </button>
+            <button class="tool-button object-tool" type="button" data-object="cone" aria-label="Pylon">
+              <img class="object-icon sandbox-item-art pylon-art" src="./icons/Pylon_Ice.png" alt="" draggable="false" />
+              <span>Pylon</span>
+            </button>
+            <button class="tool-button object-tool" type="button" data-object="goal" aria-label="Net">
+              <img class="object-icon sandbox-item-art net-art" src="./icons/Net.png" alt="" draggable="false" />
+              <span>Net</span>
+            </button>
+          </div>
+
+          <div class="tool-divider" aria-hidden="true"></div>
+
+          <div class="tool-group color-group">
+            <span class="group-label">Color</span>
+            <button class="color-button is-active" type="button" data-color="#e54c5e" style="--swatch:#e54c5e" aria-label="Red"></button>
+            <button class="color-button" type="button" data-color="#3b82d0" style="--swatch:#3b82d0" aria-label="Blue"></button>
+            <button class="color-button" type="button" data-color="#42a676" style="--swatch:#42a676" aria-label="Green"></button>
+            <button class="color-button" type="button" data-color="#20262d" style="--swatch:#20262d" aria-label="Black"></button>
+          </div>
+
+          <div class="tool-divider" aria-hidden="true"></div>
+
+          <div class="tool-group">
+            <span class="group-label">Drawing</span>
+            <button class="tool-button drawing-tool is-active" type="button" data-tool="select">
+              <svg class="line-icon" viewBox="0 0 44 22" aria-hidden="true">
+                <path d="m12 3 13 12-7 .5-3 5.5z" class="filled-icon" />
+              </svg>
+              <span>Move</span>
+            </button>
+            <button class="tool-button drawing-tool" type="button" data-tool="forward">
+              <svg class="line-icon" viewBox="0 0 44 22" aria-hidden="true">
+                <path d="M3 15C12 4 24 18 36 7" />
+                <path d="m32 5 6 1-2 6" />
+              </svg>
+              <span>Forward</span>
+            </button>
+            <button class="tool-button drawing-tool" type="button" data-tool="forwardPuck">
+              <svg class="line-icon" viewBox="0 0 44 22" aria-hidden="true">
+                <path d="M3 12q3-7 6 0t6 0t6 0t6 0t7-2" />
+                <path d="m32 7 6 2-3 5" />
+              </svg>
+              <span>Forward + puck</span>
+            </button>
+            <button class="tool-button drawing-tool" type="button" data-tool="backward">
+              <svg class="line-icon" viewBox="0 0 44 22" aria-hidden="true">
+                <path d="M1 11Q6 4 11 11M13 11Q18 4 23 11M25 11Q30 4 35 11" />
+                <path d="M6 11Q11 18 16 11M18 11Q23 18 28 11" />
+                <path d="m34 7 6 4-6 4" />
+              </svg>
+              <span>Backward</span>
+            </button>
+            <button class="tool-button drawing-tool" type="button" data-tool="backwardPuck">
+              <svg class="line-icon" viewBox="0 0 44 22" aria-hidden="true">
+                <path d="M1 11Q6 4 11 11M13 11Q18 4 23 11M25 11Q30 4 35 11" />
+                <path d="M6 11Q11 18 16 11M18 11Q23 18 28 11" />
+                <path d="M4 11h29" class="dotted-icon" />
+                <path d="m34 7 6 4-6 4" />
+              </svg>
+              <span>Backward + puck</span>
+            </button>
+            <button class="tool-button drawing-tool" type="button" data-tool="pass">
+              <svg class="line-icon" viewBox="0 0 44 22" aria-hidden="true">
+                <path d="M3 11h34" class="dashed-icon" />
+                <path d="m34 7 6 4-6 4" />
+              </svg>
+              <span>Pass</span>
+            </button>
+            <button class="tool-button drawing-tool" type="button" data-tool="shot">
+              <svg class="line-icon" viewBox="0 0 44 22" aria-hidden="true">
+                <path d="M3 8h33M3 14h33" />
+                <path d="m34 5 7 6-7 6" />
+              </svg>
+              <span>Shot</span>
+            </button>
+          </div>
+
+          <div class="tool-divider" aria-hidden="true"></div>
+
+          <div class="tool-group endpoint-group">
+            <span class="group-label">Ending</span>
+            <button class="endpoint-button is-active" type="button" data-endpoint="arrow">
+              <span class="endpoint-arrow">→</span>
+              <span>Arrow</span>
+            </button>
+            <button class="endpoint-button" type="button" data-endpoint="stop">
+              <span class="endpoint-stop">ǁ</span>
+              <span>Stop</span>
+            </button>
+          </div>
+        </div>
+        <div class="section-popover" id="sectionPopover" role="dialog" aria-label="Section tools" hidden></div>
+        <div class="shelf-actions" aria-label="History and canvas">
+          <div class="persistent-tools" id="persistentTools" aria-label="Colors and editing"></div>
+          <span class="shelf-actions-divider" aria-hidden="true"></span>
+          <button class="icon-button" id="undoButton" type="button" aria-label="Undo" title="Undo (Ctrl+Z)" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 8 5 12l4 4M6 12h7a5 5 0 0 1 5 5" />
+            </svg>
+          </button>
+          <button class="icon-button" id="redoButton" type="button" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m15 8 4 4-4 4m3-4h-7a5 5 0 0 0-5 5" />
+            </svg>
+          </button>
+          <button class="icon-button" id="documentButton" type="button" aria-label="File" title="Export / Import">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 3h7l4 4v14H7zM14 3v5h5M10 12h5m-2-2 2 2-2 2M15 17h-5m2-2-2 2 2 2" />
+            </svg>
+          </button>
+          <button class="icon-button clear-button" id="clearButton" type="button" aria-label="Clear canvas" title="Clear canvas" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 7h14M9 7V5h6v2m-8 0 1 12h8l1-12M10 10v6m4-6v6" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="sheet-bar" id="sheetBar" aria-label="Drill sheets">
+        <button class="sheet-menu-button" id="sheetMenuButton" type="button" aria-expanded="false">
+          <span class="sheet-document-label" data-sheet-document-label>Untitled</span>
+          <span class="sheet-layout-label" data-sheet-layout-label>Full rink</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+        </button>
+        <nav class="sheet-tabs" id="sheetTabs" aria-label="Drill sheets"></nav>
+        <button class="sheet-add-button" id="sheetAddButton" type="button" aria-label="Add drill sheet" title="Add drill sheet">+</button>
+        <button class="sheet-notes-button" id="sheetNotesButton" type="button" aria-label="Notes" title="Notes" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM15 3v5h4M9 12h7M9 16h5" /></svg>
+          <span>Notes</span>
+        </button>
+        <button class="sheet-tags-button" id="sheetTagsButton" type="button" aria-label="Drill tags" title="Drill tags" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h8l8 8-7 7-8-8zM8 9h.01" /></svg>
+          <span data-sheet-tags-summary>Tags</span>
+        </button>
+        <button class="sheet-library-button" id="sheetLibraryButton" type="button" aria-label="Drill Library" title="Drill Library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22zM20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22z" /></svg>
+          <span>Library</span>
+        </button>
+        <div class="sheet-tags-popover" id="sheetTagsPopover" hidden>
+          <header>
+            <strong>Drill tags</strong>
+            <button type="button" data-tags-action="close" aria-label="Close tags">×</button>
+          </header>
+          <section>
+            <span>Age levels</span>
+            <div class="tag-chip-grid" id="sheetAgeTags"></div>
+          </section>
+          <section>
+            <span>Categories</span>
+            <div class="tag-chip-grid" id="sheetCategoryTags"></div>
+          </section>
+          <footer>
+            <button type="button" data-tags-action="clear">Clear</button>
+            <button type="button" data-tags-action="library">Find in Library</button>
+            <button class="is-primary" type="button" data-tags-action="close">Done</button>
+          </footer>
+        </div>
+        <div class="sheet-menu" id="sheetMenu" hidden>
+          <div class="sheet-menu-panel" data-sheet-menu-panel="manage">
+            <label class="sheet-menu-field">
+              <span>File</span>
+              <input class="document-name-input" id="documentNameInput" type="text" maxlength="80" placeholder="File name" aria-label="File name" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="sheet-menu-field">
+              <span>Sheet</span>
+              <input class="sheet-name-input" id="sheetNameInput" type="text" maxlength="60" placeholder="Drill name" aria-label="Drill name" autocomplete="off" spellcheck="false" />
+            </label>
+            <div class="sheet-menu-section-label">Background</div>
+            <div class="sheet-layout-choices" data-current-sheet-layout-choices>
+              <button type="button" data-current-sheet-view="full">Full rink</button>
+              <button type="button" data-current-sheet-view="half">Half rink</button>
+              <button type="button" data-current-sheet-view="third">Zone</button>
+            </div>
+            <div class="sheet-transfer-actions" aria-label="Copy or paste drill sheet">
+              <button id="sheetCopyButton" type="button" title="Copy current drill">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8h10v11H9zM5 16H4V5h10v1" /></svg>
+                <span>Copy drill</span>
+              </button>
+              <button id="sheetPasteButton" type="button" title="Paste as a new drill">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h6M10 4h4v3h-4zM7 6H5v15h14V6h-2M9 12h6M12 9v6" /></svg>
+                <span>Paste drill</span>
+              </button>
+            </div>
+            <button class="sheet-delete-button" id="sheetDeleteButton" type="button" aria-label="Delete current sheet">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M9 7V5h6v2m-8 0 1 12h8l1-12M10 10v6m4-6v6" /></svg>
+              <span>Delete sheet</span>
+            </button>
+          </div>
+          <div class="sheet-menu-panel" data-sheet-menu-panel="create" hidden>
+            <div class="sheet-create-title">New sheet</div>
+            <label class="sheet-menu-field">
+              <span>Name</span>
+              <input class="sheet-name-input" id="newSheetNameInput" type="text" maxlength="60" placeholder="Drill name" aria-label="New sheet name" autocomplete="off" spellcheck="false" />
+            </label>
+            <div class="sheet-menu-section-label">Choose background</div>
+            <div class="sheet-layout-choices">
+              <button type="button" data-create-sheet-view="full">Full rink</button>
+              <button type="button" data-create-sheet-view="half">Half rink</button>
+              <button type="button" data-create-sheet-view="third">Zone</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <svg
+          id="rink"
+          class="rink"
+          viewBox="0 0 1200 640"
+          preserveAspectRatio="xMidYMid meet"
+          role="application"
+          aria-label="Hockey rink drawing canvas"
+        >
+          <defs>
+            <clipPath id="rinkClip">
+              <rect x="40" y="40" width="1120" height="560" rx="128.8" />
+            </clipPath>
+            <pattern id="centerLinePattern" width="14" height="14" patternUnits="userSpaceOnUse">
+              <rect width="7" height="14" fill="#dc4855" />
+            </pattern>
+            <filter id="objectShadow" x="-40%" y="-40%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#17212b" flood-opacity=".2" />
+            </filter>
+          </defs>
+
+          <g id="sceneRoot">
+            <g id="rinkLayer" aria-hidden="true">
+              <rect class="ice-fill" x="40" y="40" width="1120" height="560" rx="128.8" />
+              <g clip-path="url(#rinkClip)">
+                <rect class="ice-fill" x="40" y="40" width="1120" height="560" />
+                <g class="rink-markings">
+                <rect x="597.2" y="40" width="5.6" height="560" fill="url(#centerLinePattern)" opacity=".9" />
+                <rect x="457.2" y="40" width="5.6" height="560" fill="#4e9bd3" opacity=".92" />
+                <rect x="737.2" y="40" width="5.6" height="560" fill="#4e9bd3" opacity=".92" />
+                <line x1="101.6" y1="40" x2="101.6" y2="600" class="goal-line" />
+                <line x1="1098.4" y1="40" x2="1098.4" y2="600" class="goal-line" />
+
+                <circle cx="600" cy="320" r="84" class="faceoff-circle center-circle" />
+                <circle cx="600" cy="320" r="5.6" class="faceoff-dot" />
+
+                <g class="end-zone-marks">
+                  <circle cx="213.6" cy="175.1" r="84" class="faceoff-circle" />
+                  <circle cx="213.6" cy="464.9" r="84" class="faceoff-circle" />
+                  <circle cx="986.4" cy="175.1" r="84" class="faceoff-circle" />
+                  <circle cx="986.4" cy="464.9" r="84" class="faceoff-circle" />
+                  <circle cx="213.6" cy="175.1" r="5.6" class="faceoff-dot" />
+                  <circle cx="213.6" cy="464.9" r="5.6" class="faceoff-dot" />
+                  <circle cx="986.4" cy="175.1" r="5.6" class="faceoff-dot" />
+                  <circle cx="986.4" cy="464.9" r="5.6" class="faceoff-dot" />
+                  <circle cx="488" cy="175.1" r="5.6" class="neutral-dot" />
+                  <circle cx="488" cy="464.9" r="5.6" class="neutral-dot" />
+                  <circle cx="712" cy="175.1" r="5.6" class="neutral-dot" />
+                  <circle cx="712" cy="464.9" r="5.6" class="neutral-dot" />
+                </g>
+                <path d="M101.6 286.4A33.6 33.6 0 0 1 101.6 353.6Z" class="crease" />
+                <path d="M1098.4 286.4A33.6 33.6 0 0 0 1098.4 353.6Z" class="crease" />
+                </g>
+              </g>
+              <rect class="boards" x="40" y="40" width="1120" height="560" rx="128.8" />
+            </g>
+
+            <g id="paintLayer"></g>
+            <g id="strokeLayer"></g>
+            <g id="tacticsFormationLayer"></g>
+            <g id="objectLayer"></g>
+            <g id="tacticsActorLayer"></g>
+            <g id="automationLayer"></g>
+            <g id="playbackLayer"></g>
+            <g id="previewLayer"></g>
+            <g id="paintPreviewLayer"></g>
+            <g id="brushCursorLayer"></g>
+          </g>
+        </svg>
+
+        <div class="floating-controls">
+          <nav class="layout-switch" aria-label="Rink layout">
+            <button class="layout-button is-active" type="button" data-view="full">Full</button>
+            <button class="layout-button" type="button" data-view="half">Half</button>
+            <button class="layout-button" type="button" data-view="third">Zone</button>
+          </nav>
+          <input
+            class="document-name-input"
+            id="legacyDocumentNameInput"
+            type="text"
+            maxlength="80"
+            placeholder="File name"
+            aria-label="File name"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+        <div class="canvas-hint" id="canvasHint">
+          Drag an object onto the ice or choose a curve type.
+        </div>
+        <aside class="notes-panel" id="notesPanel" aria-label="Drill notes" hidden>
+          <header>
+            <strong>Notes</strong>
+            <button class="notes-close-button" id="notesCloseButton" type="button" aria-label="Close notes">×</button>
+          </header>
+          <div class="notes-toolbar">
+            <button class="notes-bold-button" id="notesBoldButton" type="button" aria-pressed="false" title="Bold"><strong>B</strong></button>
+            <label>
+              <span>Size</span>
+              <input id="notesSizeRange" type="range" min="12" max="28" step="1" value="16" />
+              <output id="notesSizeOutput">16</output>
+            </label>
+          </div>
+          <section class="notes-equipment" id="notesEquipment" aria-label="Equipment required">
+            <span>Equipment</span>
+            <div id="notesEquipmentItems">No equipment</div>
+          </section>
+          <div
+            id="notesText"
+            contenteditable="true"
+            role="textbox"
+            aria-multiline="true"
+            data-placeholder="Instructions, duration, setup…"
+            spellcheck="true"
+          ></div>
+        </aside>
+        <div class="tactics-label-editor" id="tacticsLabelEditor" hidden>
+          <input
+            id="tacticsLabelInput"
+            type="text"
+            maxlength="24"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Player label"
+            placeholder="Label"
+          />
+        </div>
+        <div class="tactics-dock" id="tacticsDock" aria-label="Tactical timeline" hidden>
+          <button class="tactics-play-button" id="tacticsPlayButton" type="button" aria-label="Play tactics">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path class="tactics-play-icon" d="M8 5v14l11-7z" /><path class="tactics-pause-icon" d="M7 5h4v14H7zM14 5h4v14h-4z" /></svg>
+          </button>
+          <button class="tactics-formation-button is-active" id="tacticsFormationButton" type="button" aria-pressed="true" title="Show formations">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 18 3-12 11 4-2 9z" /></svg>
+          </button>
+          <button class="tactics-key-nav-button" id="tacticsPrevKeyButton" type="button" aria-label="Previous keyframe" title="Previous keyframe">‹</button>
+          <button class="tactics-key-nav-button" id="tacticsNextKeyButton" type="button" aria-label="Next keyframe" title="Next keyframe">›</button>
+          <div class="tactics-timeline">
+            <input id="tacticsRange" type="range" min="0" max="10" step="0.01" value="0" aria-label="Tactical time" />
+            <div class="tactics-key-ticks" id="tacticsKeyTicks"></div>
+          </div>
+          <div class="tactics-time" id="tacticsTime">
+            <output id="tacticsCurrentTime">0.0</output>
+            <span>/</span>
+            <input id="tacticsDurationInput" type="number" min="0.5" max="300" step="0.5" value="10.0" aria-label="Animation duration in seconds" />
+            <span>s</span>
+          </div>
+        </div>
+        <div class="playback-dock" id="playbackDock" aria-label="Timeline" hidden>
+          <button class="playback-play-button" id="playbackPlayButton" type="button" aria-label="Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="playback-play-icon" d="M8 5v14l11-7z" />
+              <path class="playback-pause-icon" d="M7 5h4v14H7zM14 5h4v14h-4z" />
+            </svg>
+          </button>
+          <button
+            class="playback-symmetry-button"
+            id="playbackSymmetryButton"
+            type="button"
+            aria-label="Symmetric second phase"
+            title="Symmetric second phase"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 7h14M14 4l3 3-3 3M21 17H7M10 14l-3 3 3 3" />
+            </svg>
+          </button>
+          <button class="playback-speed-button" id="playbackSpeedButton" type="button" aria-label="Global speed">
+            <small>Speed</small>
+            <strong data-playback-speed>100%</strong>
+          </button>
+          <div class="playback-speed-menu" id="playbackSpeedMenu" hidden>
+            <label for="playbackSpeedRange">Global Speed</label>
+            <output data-playback-speed-output>100%</output>
+            <input id="playbackSpeedRange" type="range" min="1" max="500" step="1" value="100" aria-label="Global speed percent" />
+          </div>
+          <button class="playback-collapse-button" id="playbackCollapseButton" type="button" aria-label="Collapse timeline" title="Collapse timeline">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
+          </button>
+          <div class="playback-timeline">
+            <div class="playback-blocks" id="playbackBlocks"></div>
+            <input
+              class="playback-range"
+              id="playbackRange"
+              type="range"
+              min="0"
+              max="1"
+              step="0.001"
+              value="0"
+              aria-label="Playback time"
+            />
+          </div>
+          <output class="playback-time" id="playbackTime">0.0 / 0.0 s</output>
+        </div>
+        <output class="playback-section-hud" id="playbackSectionHud" hidden>
+          <span><small>Speed</small><strong data-section-speed>50</strong></span>
+          <span><small>Wait</small><strong data-section-wait>0.0 s</strong></span>
+        </output>
+      </section>
+    </main>
+
+    <div class="drag-ghost" id="dragGhost" aria-hidden="true"></div>
+    <div class="curve-delete-choice" id="curveDeleteChoice" hidden>
+      <button type="button" data-delete-scope="segment">Segment</button>
+      <button type="button" data-delete-scope="event">Entire event</button>
+    </div>
+    <div class="clear-menu" id="clearMenu" role="menu" aria-label="Clear" hidden>
+      <button type="button" role="menuitem" data-clear-scope="all">Clear All</button>
+      <button type="button" role="menuitem" data-clear-scope="selected">Clear Selected</button>
+      <button type="button" role="menuitem" data-clear-scope="curves">Clear Curves</button>
+      <button type="button" role="menuitem" data-clear-scope="items">Clear Items</button>
+      <button type="button" role="menuitem" data-clear-scope="paint">Clear Paint</button>
+    </div>
+    <div class="clear-menu document-menu" id="documentMenu" role="menu" aria-label="File" hidden>
+      <button type="button" role="menuitem" data-document-action="new">New File</button>
+      <button type="button" role="menuitem" data-document-action="library">Drill Library</button>
+      <button type="button" role="menuitem" data-document-action="export">Export .jbdrill</button>
+      <button type="button" role="menuitem" data-document-action="import">Import .jbdrill</button>
+      <button type="button" role="menuitem" data-document-action="play">Share Player link</button>
+      <button type="button" role="menuitem" data-document-action="play-file">Export .jbplay</button>
+      <button type="button" role="menuitem" data-document-action="pdf">Export PDF</button>
+      <button type="button" role="menuitem" data-document-action="video">Export Video</button>
+      <div class="document-file-list" id="documentFileList" hidden></div>
+      <button class="document-settings-action" type="button" role="menuitem" data-document-action="settings">Settings</button>
+    </div>
+    <section class="settings-dialog-backdrop" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsDialogTitle" hidden>
+      <div class="settings-dialog-card">
+        <header class="settings-dialog-header">
+          <div>
+            <strong id="settingsDialogTitle">Settings</strong>
+            <span>App-wide preferences</span>
+          </div>
+          <button type="button" data-settings-action="close" aria-label="Close Settings">×</button>
+        </header>
+        <div class="settings-dialog-content">
+          <details class="settings-section" data-settings-section="appearance" data-settings-default="open" open>
+            <summary class="settings-section-heading settings-section-summary">
+              <div>
+                <strong>Appearance</strong>
+                <span>Theme and player color palette</span>
+              </div>
+            </summary>
+            <div class="settings-section-body">
+              <div class="settings-theme-control" id="settingsThemeControl" role="radiogroup" aria-label="Appearance theme">
+                <label><input type="radio" name="appearance-theme" value="system" /><span>System</span></label>
+                <label><input type="radio" name="appearance-theme" value="light" /><span>Light</span></label>
+                <label><input type="radio" name="appearance-theme" value="dark" /><span>Dark</span></label>
+              </div>
+              <div class="settings-section-heading settings-section-subheading">
+                <div>
+                  <strong>Color palette</strong>
+                  <span>Each drill stores the slot ID, not this color value</span>
+                </div>
+                <button class="settings-reset-button" type="button" data-settings-action="reset-colors">Reset</button>
+              </div>
+              <div class="settings-palette" id="settingsPalette"></div>
+            </div>
+          </details>
+          <details class="settings-section" data-settings-section="storage" data-settings-default="open" open>
+            <summary class="settings-section-heading settings-section-summary">
+              <div>
+                <strong>Storage</strong>
+                <span>Local folder or Google Drive</span>
+              </div>
+            </summary>
+            <div class="settings-section-body settings-storage-body">
+              <div class="document-storage-status" id="documentStorageStatus" data-state="local">
+                <span class="document-storage-dot" aria-hidden="true"></span>
+                <span><small>Storage</small><strong data-storage-label>Local</strong></span>
+              </div>
+              <button class="settings-storage-button" id="settingsStorageButton" type="button">Choose folder</button>
+            </div>
+          </details>
+          <details class="settings-section" data-settings-section="export-identity" data-settings-default="closed">
+            <summary class="settings-section-heading settings-section-summary">
+              <div>
+                <strong>Export identity</strong>
+                <span>Club logo used in PDF and video headers</span>
+              </div>
+            </summary>
+            <div class="settings-section-body">
+              <div class="settings-section-actions">
+                <button class="settings-reset-button" type="button" data-settings-action="reset-banner">Reset</button>
+              </div>
+              <div class="settings-banner-editor" id="settingsBannerEditor">
+                <canvas class="settings-banner-preview" id="settingsBannerPreview" width="842" height="192" aria-label="Export header logo preview"></canvas>
+                <div class="settings-banner-controls">
+                  <button class="settings-storage-button" type="button" data-settings-action="upload-banner">Load logo</button>
+                  <label class="settings-banner-slider">
+                    <span>Crop zoom</span>
+                    <input id="settingsBannerZoom" type="range" min="100" max="300" step="1" value="100" />
+                    <output id="settingsBannerZoomValue">100%</output>
+                  </label>
+                  <label class="settings-banner-slider">
+                    <span>Mask width</span>
+                    <input id="settingsBannerWidth" type="range" min="40" max="180" step="1" value="85" />
+                    <output id="settingsBannerWidthValue">85%</output>
+                  </label>
+                  <label class="settings-banner-slider">
+                    <span>Roundness</span>
+                    <input id="settingsBannerRoundness" type="range" min="0" max="50" step="1" value="12" />
+                    <output id="settingsBannerRoundnessValue">12%</output>
+                  </label>
+                </div>
+                <small>The mask stays fixed. Zoom and drag only transform the logo beneath it.</small>
+              </div>
+              <input id="settingsBannerInput" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+    <input id="documentImportInput" type="file" accept=".jbdrill,application/json" hidden />
+    <div class="export-sheet-dialog-backdrop" id="exportSheetDialog" role="dialog" aria-modal="true" aria-labelledby="exportSheetDialogTitle" hidden>
+      <div class="export-sheet-dialog-card">
+        <div class="export-sheet-dialog-header">
+          <strong id="exportSheetDialogTitle">Export</strong>
+          <button type="button" data-export-sheet-action="cancel" aria-label="Close">×</button>
+        </div>
+        <div class="export-sheet-dialog-tools">
+          <button type="button" data-export-sheet-action="all">All</button>
+          <button type="button" data-export-sheet-action="none">None</button>
+        </div>
+        <div class="export-sheet-dialog-list" id="exportSheetDialogList"></div>
+        <div class="export-sheet-dialog-footer">
+          <button type="button" data-export-sheet-action="cancel">Cancel</button>
+          <button class="is-primary" type="button" data-export-sheet-action="confirm">Export</button>
+        </div>
+      </div>
+    </div>
+    <section class="drill-library" id="drillLibrary" role="dialog" aria-modal="true" aria-labelledby="drillLibraryTitle" hidden>
+      <div class="drill-library-card">
+        <header class="drill-library-header">
+          <div>
+            <strong id="drillLibraryTitle">Drill Library</strong>
+            <span id="drillLibraryStatus">Loading drills…</span>
+          </div>
+          <button type="button" data-library-action="close" aria-label="Close Drill Library">×</button>
+        </header>
+        <div class="drill-library-filters">
+          <div class="drill-library-filter-stack">
+            <section>
+              <span>Only Included Example Drills</span>
+              <div class="tag-chip-grid">
+                <button
+                  class="tag-chip"
+                  id="libraryIncludedTag"
+                  type="button"
+                  data-library-filter="included"
+                  aria-pressed="false"
+                >Included</button>
+              </div>
+            </section>
+            <section>
+              <span>Age levels</span>
+              <div class="tag-chip-grid" id="libraryAgeTags"></div>
+            </section>
+          </div>
+          <section>
+            <span>Categories</span>
+            <div class="tag-chip-grid" id="libraryCategoryTags"></div>
+          </section>
+          <button class="drill-library-clear" type="button" data-library-action="clear-filters">Clear filters</button>
+        </div>
+        <div class="drill-library-content">
+          <aside class="drill-library-results" id="drillLibraryResults" aria-label="Matching drills"></aside>
+          <article class="drill-library-preview">
+            <div class="drill-library-preview-heading">
+              <div>
+                <strong id="drillLibraryPreviewName">Select a drill</strong>
+                <span id="drillLibraryPreviewSource"></span>
+              </div>
+              <nav>
+                <button type="button" data-library-action="previous" title="Previous drill">‹</button>
+                <button type="button" data-library-action="next" title="Next drill">›</button>
+              </nav>
+            </div>
+            <div class="drill-library-canvas-wrap">
+              <canvas id="drillLibraryCanvas" width="1200" height="720"></canvas>
+              <div class="drill-library-empty" id="drillLibraryEmpty">No matching drills</div>
+            </div>
+            <div class="drill-library-preview-tags" id="drillLibraryPreviewTags"></div>
+            <div class="drill-library-preview-notes" id="drillLibraryPreviewNotes"></div>
+          </article>
+        </div>
+        <footer class="drill-library-footer">
+          <span id="drillLibrarySelectionStatus"></span>
+          <div class="drill-library-footer-actions">
+            <button type="button" data-library-action="toggle-selection" aria-pressed="false">Select Drill</button>
+            <button class="is-primary" type="button" data-library-action="add">Add to Session</button>
+          </div>
+        </footer>
+        <div class="drill-library-loading" id="drillLibraryLoading" role="status" aria-live="polite" hidden>
+          <span class="drill-library-loading-spinner" aria-hidden="true"></span>
+          <strong id="drillLibraryLoadingText">Loading data…</strong>
+          <small>The library will open as soon as the drills are ready.</small>
+        </div>
+      </div>
+    </section>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./icons/finesse-shapes.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

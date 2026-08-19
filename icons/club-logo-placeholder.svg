@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title description">
+  <title id="title">Club logo placeholder</title>
+  <description id="description">Neutral shield placeholder for a club logo.</description>
+  <path d="M180 18 316 61v66c0 54-37 82-136 103C81 209 44 181 44 127V61Z"
+        fill="#343430" stroke="#f39200" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M180 42 289 76v50c0 37-25 58-109 77-84-19-109-40-109-77V76Z"
+        fill="none" stroke="#f4f0e8" stroke-opacity=".34" stroke-width="3"/>
+  <text x="180" y="126" text-anchor="middle" fill="#f4f0e8"
+        font-family="Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="5">CLUB</text>
+  <text x="180" y="158" text-anchor="middle" fill="#f39200"
+        font-family="Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="4">YOUR LOGO</text>
+</svg>
