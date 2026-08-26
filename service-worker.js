@@ -1,4 +1,4 @@
-const CACHE_NAME = "jb-drill-player-v6";
+const CACHE_NAME = "jb-drill-player-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
