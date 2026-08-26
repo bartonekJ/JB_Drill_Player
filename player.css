@@ -334,6 +334,7 @@
 :root[data-runtime="player"].is-mobile-player {
   --player-header-height: 0px;
   --sheet-bar-height: 0px;
+  --player-mobile-panel-width: clamp(112px, 15vw, 148px);
 }
 
 :root[data-runtime="player"].is-mobile-player body {
@@ -452,6 +453,15 @@
   display: none;
 }
 
+:root[data-runtime="player"].is-mobile-player .player-mobile-actions button > span,
+:root[data-runtime="player"].is-mobile-player .player-mobile-actions button > strong {
+  display: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-landscape-only {
+  display: none !important;
+}
+
 :root[data-runtime="player"].is-mobile-player .player-mobile-actions svg {
   width: 21px;
   height: 21px;
@@ -460,6 +470,15 @@
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-pause-icon,
+:root[data-runtime="player"].is-mobile-player .player-mobile-play-button.is-playing .player-mobile-play-icon {
+  display: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-play-button.is-playing .player-mobile-pause-icon {
+  display: block;
 }
 
 :root[data-runtime="player"].is-mobile-player .player-mobile-start {
@@ -591,8 +610,181 @@
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
+  :root[data-runtime="player"].is-mobile-player .workspace,
+  :root[data-runtime="player"].is-mobile-player .workspace.is-playback,
+  :root[data-runtime="player"].is-mobile-player .workspace.is-tactics {
+    right: var(--player-mobile-panel-width);
+    width: auto;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .rink {
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-start {
+    left: calc((100% - var(--player-mobile-panel-width)) / 2);
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-actions {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    width: var(--player-mobile-panel-width);
+    flex-direction: column;
+    gap: 6px;
+    padding:
+      max(7px, env(safe-area-inset-top, 0px))
+      max(7px, env(safe-area-inset-right, 0px))
+      max(7px, env(safe-area-inset-bottom, 0px))
+      7px;
+    border-left: 1px solid rgb(255 255 255 / 12%);
+    background: rgb(30 30 28 / 96%);
+    box-shadow: -8px 0 28px rgb(0 0 0 / 22%);
+    backdrop-filter: blur(14px);
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-actions button,
+  :root[data-runtime="player"].is-mobile-player .player-mobile-landscape-only {
+    display: grid !important;
+    width: 100%;
+    min-height: 47px;
+    grid-template-columns: 23px minmax(0, 1fr);
+    align-items: center;
+    justify-items: start;
+    gap: 8px;
+    padding: 6px 9px;
+    border-radius: 10px;
+    background: rgb(255 255 255 / 7%);
+    box-shadow: none;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.05;
+    text-align: left;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-actions button:disabled {
+    display: none !important;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-actions button > span,
+  :root[data-runtime="player"].is-mobile-player .player-mobile-actions button > strong {
+    display: block;
+    min-width: 0;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-actions svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-loop-button {
+    grid-template-rows: auto auto;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-loop-button svg {
+    grid-row: 1 / 3;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-loop-button strong {
+    color: #f39200;
+    font-size: 10px;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .player-mobile-loop-button.is-active {
+    border-color: rgb(243 146 0 / 72%);
+    background: rgb(243 146 0 / 14%);
+  }
+
+  :root[data-runtime="player"].is-mobile-player #playerMobileFullscreenButton {
+    margin-top: auto;
+  }
+
+  :root[data-runtime="player"].is-mobile-player.mobile-player-controls-hidden .player-mobile-actions {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .sheet-bar,
+  :root[data-runtime="player"].is-mobile-player.player-single-sheet .sheet-bar {
+    top: max(7px, env(safe-area-inset-top, 0px));
+    right: calc(var(--player-mobile-panel-width) + 7px);
+    bottom: max(7px, env(safe-area-inset-bottom, 0px));
+    left: auto;
+    display: none;
+    width: min(230px, calc(100vw - var(--player-mobile-panel-width) - 14px));
+    min-height: 0;
+    max-height: none;
+    padding: 7px;
+    overflow-y: auto;
+    border-radius: 13px;
+  }
+
+  :root[data-runtime="player"].is-mobile-player.mobile-player-drills-open:not(.player-single-sheet) .sheet-bar {
+    display: flex;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .sheet-tabs {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 4px;
+    overflow: visible;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .sheet-tab {
+    width: 100%;
+    max-width: none;
+    min-height: 34px;
+    text-align: left;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .notes-panel {
+    right: calc(var(--player-mobile-panel-width) + 7px);
+  }
+
   :root[data-runtime="player"].is-mobile-player .playback-dock,
   :root[data-runtime="player"].is-mobile-player .tactics-dock {
-    width: min(540px, calc(100% - 118px));
+    right: calc(var(--player-mobile-panel-width) + 7px);
+    left: 7px;
+    width: auto;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+  }
+
+  :root[data-runtime="player"].is-mobile-player.mobile-player-timeline-visible .playback-dock:not([hidden]),
+  :root[data-runtime="player"].is-mobile-player.mobile-player-timeline-visible .tactics-dock:not([hidden]) {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .playback-dock {
+    grid-template-columns: minmax(90px, 1fr) 76px;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .playback-play-button,
+  :root[data-runtime="player"].is-mobile-player .playback-speed-button,
+  :root[data-runtime="player"].is-mobile-player .tactics-play-button {
+    display: none !important;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .playback-timeline,
+  :root[data-runtime="player"].is-mobile-player .tactics-timeline {
+    grid-column: 1;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .playback-time,
+  :root[data-runtime="player"].is-mobile-player .tactics-time {
+    grid-column: 2;
+  }
+
+  :root[data-runtime="player"].is-mobile-player .tactics-dock {
+    grid-template-columns: minmax(90px, 1fr) 76px;
   }
 }

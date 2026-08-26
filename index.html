@@ -13,7 +13,7 @@
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
     <link rel="stylesheet" href="./styles.css?v=076bf2242630" />
-    <link rel="stylesheet" href="./player.css?v=808b0f90673b" />
+    <link rel="stylesheet" href="./player.css?v=c1c6671ef8df" />
   </head>
   <body>
     <section class="player-welcome" id="playerWelcome" aria-labelledby="playerWelcomeTitle" hidden>
@@ -338,26 +338,29 @@
           <span id="playerMobileStartLabel">Play full screen</span>
         </button>
         <div class="player-mobile-actions" id="playerMobileActions" hidden>
+          <button class="player-mobile-landscape-only" id="playerMobileDrillsButton" type="button" aria-label="Drills" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h14" /></svg>
+            <span>Drills</span>
+          </button>
           <button id="playerMobileNotesButton" type="button" aria-label="Notes" aria-expanded="false">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h4" /></svg>
+            <span>Notes</span>
+          </button>
+          <button class="player-mobile-landscape-only player-mobile-play-button" id="playerMobilePlayButton" type="button" aria-label="Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="player-mobile-play-icon" d="M8 5v14l11-7z" />
+              <path class="player-mobile-pause-icon" d="M7 5h4v14H7zM14 5h4v14h-4z" />
+            </svg>
+            <span id="playerMobilePlayLabel">Play</span>
+          </button>
+          <button class="player-mobile-landscape-only player-mobile-loop-button" id="playerMobileLoopButton" type="button" aria-label="Loop mode: Once" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 7H7a4 4 0 0 0-4 4v1M6 4 3 7l3 3M6 17h11a4 4 0 0 0 4-4v-1M18 20l3-3-3-3" /></svg>
+            <span>Loop mode</span>
+            <strong id="playerMobileLoopValue">Once</strong>
           </button>
           <button id="playerMobileFullscreenButton" type="button" aria-label="Enter full screen">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
-          </button>
-        </div>
-
-        <button class="player-mobile-start" id="playerMobileStartButton" type="button" hidden>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-          <span id="playerMobileStartLabel">Play full screen</span>
-        </button>
-        <div class="player-mobile-actions" id="playerMobileActions" hidden>
-          <button id="playerMobileNotesButton" type="button" aria-label="Notes" aria-expanded="false">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h4" /></svg>
-          </button>
-          <button id="playerMobileFullscreenButton" type="button" aria-label="Enter full screen">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
+            <span>Fullscreen</span>
           </button>
         </div>
 
@@ -691,6 +694,6 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="./icons/finesse-shapes.js"></script>
-    <script src="./app.js?v=a27029487c4d"></script>
+    <script src="./app.js?v=36385f45d3ad"></script>
   </body>
 </html>
