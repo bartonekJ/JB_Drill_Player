@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=076bf2242630" />
+    <link rel="stylesheet" href="./styles.css?v=25d87d25f50e" />
     <link rel="stylesheet" href="./player.css?v=75e7ddfe1ffa" />
   </head>
   <body>
@@ -183,6 +183,10 @@
         </button>
         <nav class="sheet-tabs" id="sheetTabs" aria-label="Drill sheets"></nav>
         <button class="sheet-add-button" id="sheetAddButton" type="button" aria-label="Add drill sheet" title="Add drill sheet">+</button>
+        <button class="sheet-roster-button" id="sheetRosterButton" type="button" aria-label="Insert roster" title="Insert roster" aria-expanded="false" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8-1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3 19v-2.5C3 14.6 5.2 13 8 13s5 1.6 5 3.5V19Zm10.5 0v-2c0-1.2-.5-2.3-1.5-3.2 1-.5 2.4-.8 4-.8 2.8 0 5 1.5 5 3.4V19Z" /></svg>
+          <span>Roster</span>
+        </button>
         <button class="sheet-notes-button" id="sheetNotesButton" type="button" aria-label="Notes" title="Notes" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM15 3v5h4M9 12h7M9 16h5" /></svg>
           <span>Notes</span>
@@ -195,6 +199,13 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22zM20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22z" /></svg>
           <span>Library</span>
         </button>
+        <div class="sheet-roster-popover" id="sheetRosterPopover" hidden>
+          <header>
+            <strong>Insert roster</strong>
+            <button type="button" data-roster-popover-action="close" aria-label="Close roster list">×</button>
+          </header>
+          <div class="sheet-roster-list" id="sheetRosterList"></div>
+        </div>
         <div class="sheet-tags-popover" id="sheetTagsPopover" hidden>
           <header>
             <strong>Drill tags</strong>
@@ -565,6 +576,20 @@
               <button class="settings-storage-button" id="settingsStorageButton" type="button">Choose folder</button>
             </div>
           </details>
+          <details class="settings-section" data-settings-section="rosters" data-settings-default="closed">
+            <summary class="settings-section-heading settings-section-summary">
+              <div>
+                <strong>Rosters</strong>
+                <span>Teams available in Tactics mode</span>
+              </div>
+            </summary>
+            <div class="settings-section-body settings-rosters-body">
+              <div class="settings-section-actions settings-rosters-actions">
+                <button class="settings-storage-button" type="button" data-settings-action="add-roster">+ Team</button>
+              </div>
+              <div class="settings-rosters" id="settingsRosters"></div>
+            </div>
+          </details>
           <details class="settings-section" data-settings-section="export-identity" data-settings-default="closed">
             <summary class="settings-section-heading settings-section-summary">
               <div>
@@ -694,6 +719,6 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="./icons/finesse-shapes.js"></script>
-    <script src="./app.js?v=16e626da223f"></script>
+    <script src="./app.js?v=da1a173b5826"></script>
   </body>
 </html>

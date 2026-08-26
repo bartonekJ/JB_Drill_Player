@@ -541,7 +541,8 @@ button {
 
 .sheet-notes-button,
 .sheet-tags-button,
-.sheet-library-button {
+.sheet-library-button,
+.sheet-roster-button {
   display: flex;
   height: 34px;
   flex: 0 0 auto;
@@ -558,7 +559,8 @@ button {
 
 .sheet-notes-button svg,
 .sheet-tags-button svg,
-.sheet-library-button svg {
+.sheet-library-button svg,
+.sheet-roster-button svg {
   width: 17px;
   height: 17px;
   fill: none;
@@ -566,6 +568,14 @@ button {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.7;
+}
+
+.sheet-roster-button[hidden] { display: none; }
+
+.sheet-roster-button.is-active {
+  border-color: #8ab6d4;
+  background: #dfeef8;
+  color: #145c8b;
 }
 
 .sheet-notes-button.is-active {
@@ -594,9 +604,75 @@ button {
 }
 
 @media (max-width: 860px) {
-  .sheet-library-button span { display: none; }
-  .sheet-library-button { width: 36px; justify-content: center; padding: 0; }
+  .sheet-library-button span,
+  .sheet-roster-button span { display: none; }
+  .sheet-library-button,
+  .sheet-roster-button { width: 36px; justify-content: center; padding: 0; }
 }
+
+.sheet-roster-popover {
+  position: absolute;
+  z-index: 25;
+  top: calc(100% + 5px);
+  right: max(8px, env(safe-area-inset-right, 0px));
+  display: grid;
+  width: min(360px, calc(100vw - 16px));
+  max-height: min(520px, calc(100vh - 92px));
+  overflow: hidden;
+  border: 1px solid #c5d2da;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 98%);
+  box-shadow: 0 14px 42px rgb(31 44 55 / 22%);
+  backdrop-filter: blur(12px);
+}
+
+.sheet-roster-popover[hidden] { display: none; }
+
+.sheet-roster-popover header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e7eb;
+}
+
+.sheet-roster-popover header > button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: #edf3f6;
+  color: #536674;
+  font-size: 22px;
+}
+
+.sheet-roster-list {
+  display: grid;
+  gap: 6px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.sheet-roster-list > button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1px solid #d3dde3;
+  border-radius: 10px;
+  background: #f8fafb;
+  color: #324b5d;
+  text-align: left;
+}
+
+.sheet-roster-list > button strong { overflow: hidden; text-overflow: ellipsis; }
+.sheet-roster-list > button small { color: #71808b; white-space: nowrap; }
+.sheet-roster-list > button:hover { border-color: #8ab6d4; background: #eaf4f9; }
+.sheet-roster-empty { margin: 0; padding: 20px 14px; color: #71808b; font-size: 12px; text-align: center; }
 
 .sheet-tags-popover {
   position: absolute;
@@ -2212,6 +2288,122 @@ button {
   justify-content: flex-end;
 }
 
+.settings-rosters-body { gap: 10px; }
+.settings-rosters-actions { justify-content: flex-start; }
+
+.settings-rosters {
+  display: grid;
+  gap: 10px;
+}
+
+.settings-roster-card {
+  display: grid;
+  gap: 9px;
+  padding: 11px;
+  border: 1px solid #d2dde4;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.settings-roster-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 7px;
+}
+
+.settings-roster-header input,
+.settings-roster-row input,
+.settings-roster-row select {
+  min-width: 0;
+  height: 38px;
+  padding: 7px 9px;
+  border: 1px solid #c8d5dd;
+  border-radius: 9px;
+  background: #fff;
+  color: #263f52;
+  font: inherit;
+}
+
+.settings-roster-header input { font-weight: 800; }
+
+.settings-roster-icon-button {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid #c8d5dd;
+  border-radius: 9px;
+  background: #f4f7f9;
+  color: #526672;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.settings-roster-icon-button.is-danger { color: #aa3441; }
+
+.settings-roster-column-headings,
+.settings-roster-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 82px 72px 38px;
+  gap: 7px;
+  align-items: center;
+}
+
+.settings-roster-column-headings {
+  padding: 0 2px;
+  color: #71808b;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.settings-roster-empty {
+  margin: 0;
+  padding: 12px;
+  border: 1px dashed #c8d5dd;
+  border-radius: 10px;
+  color: #71808b;
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
+}
+
+:root[data-theme="dark"] .sheet-roster-popover,
+:root[data-theme="dark"] .settings-roster-card {
+  border-color: #47545d;
+  background: #20272c;
+}
+
+:root[data-theme="dark"] .sheet-roster-popover header {
+  border-color: #414d55;
+}
+
+:root[data-theme="dark"] .sheet-roster-popover header > button,
+:root[data-theme="dark"] .settings-roster-icon-button,
+:root[data-theme="dark"] .sheet-roster-list > button {
+  border-color: #4b5861;
+  background: #2a3339;
+  color: #dbe6eb;
+}
+
+:root[data-theme="dark"] .settings-roster-header input,
+:root[data-theme="dark"] .settings-roster-row input,
+:root[data-theme="dark"] .settings-roster-row select {
+  border-color: #4b5861;
+  background: #171d21;
+  color: #edf3f6;
+}
+
+@media (max-width: 620px) {
+  .settings-roster-column-headings,
+  .settings-roster-row {
+    grid-template-columns: minmax(96px, 1fr) 70px 58px 38px;
+    gap: 5px;
+  }
+  .settings-roster-row input,
+  .settings-roster-row select { padding-inline: 6px; }
+}
+
 .settings-storage-body {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -3751,14 +3943,16 @@ button {
 }
 
 :root[data-theme] .sheet-tab.is-active,
-:root[data-theme] .sheet-notes-button.is-active {
+:root[data-theme] .sheet-notes-button.is-active,
+:root[data-theme] .sheet-roster-button.is-active {
   background: var(--accent-soft);
   color: var(--accent-strong);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 :root[data-theme] .sheet-add-button,
-:root[data-theme] .sheet-library-button {
+:root[data-theme] .sheet-library-button,
+:root[data-theme] .sheet-roster-button {
   border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
   background: var(--panel-raised);
   color: var(--accent-strong);
@@ -3774,6 +3968,7 @@ button {
 :root[data-theme="dark"] .sheet-tab,
 :root[data-theme="dark"] .sheet-notes-button,
 :root[data-theme="dark"] .sheet-tags-button,
+:root[data-theme="dark"] .sheet-roster-button,
 :root[data-theme="dark"] .document-name-input,
 :root[data-theme="dark"] .playback-speed-button {
   color: var(--ink);
@@ -3902,6 +4097,7 @@ button {
 :root[data-theme="dark"] .sheet-notes-button,
 :root[data-theme="dark"] .sheet-tags-button,
 :root[data-theme="dark"] .sheet-library-button,
+:root[data-theme="dark"] .sheet-roster-button,
 :root[data-theme="dark"] .sheet-add-button {
   border-color: var(--line);
   background: var(--panel-raised);
@@ -3999,6 +4195,7 @@ button {
 :root[data-theme] .sheet-tab,
 :root[data-theme] .sheet-notes-button,
 :root[data-theme] .sheet-tags-button,
+:root[data-theme] .sheet-roster-button,
 :root[data-theme] .playback-speed-button {
   border-color: var(--control-border);
   color: var(--control-text);
@@ -4012,7 +4209,8 @@ button {
 :root[data-theme] .sheet-menu-button:hover,
 :root[data-theme] .sheet-tab:hover,
 :root[data-theme] .sheet-notes-button:hover,
-:root[data-theme] .sheet-tags-button:hover {
+:root[data-theme] .sheet-tags-button:hover,
+:root[data-theme] .sheet-roster-button:hover {
   background: var(--control-bg-hover);
   color: var(--control-text);
 }
@@ -4268,6 +4466,7 @@ button {
 :root[data-theme] .sheet-tab.is-reordering,
 :root[data-theme] .sheet-notes-button.is-active,
 :root[data-theme] .sheet-tags-button.has-tags,
+:root[data-theme] .sheet-roster-button.is-active,
 :root[data-theme] .notes-bold-button[aria-pressed="true"],
 :root[data-theme] .playback-symmetry-button.is-active,
 :root[data-theme] .playback-speed-button.is-active {
@@ -4333,6 +4532,7 @@ button {
 :root[data-theme] .sheet-notes-button,
 :root[data-theme] .sheet-tags-button,
 :root[data-theme] .sheet-library-button,
+:root[data-theme] .sheet-roster-button,
 :root[data-theme] .sheet-add-button {
   border-color: var(--control-border);
   background: var(--control-bg);
