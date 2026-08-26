@@ -104,6 +104,11 @@
   font-weight: 850;
 }
 
+.player-mobile-start,
+.player-mobile-actions {
+  display: none;
+}
+
 :root[data-runtime="player"] .player-header {
   z-index: 40;
   display: grid;
@@ -320,5 +325,274 @@
   :root[data-runtime="player"] .playback-time {
     grid-column: 3;
     font-size: 10px;
+  }
+}
+
+/* Phone-only cinema mode. The editor, installed apps, tablets and desktop
+   Player keep their existing layout; app.js adds this class only for the
+   standalone web Player on a coarse-pointer phone-sized screen. */
+:root[data-runtime="player"].is-mobile-player {
+  --player-header-height: 0px;
+  --sheet-bar-height: 0px;
+}
+
+:root[data-runtime="player"].is-mobile-player body {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: #242421;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-header {
+  display: none !important;
+}
+
+:root[data-runtime="player"].is-mobile-player .app-shell {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+:root[data-runtime="player"].is-mobile-player .workspace,
+:root[data-runtime="player"].is-mobile-player .workspace.is-playback,
+:root[data-runtime="player"].is-mobile-player .workspace.is-tactics {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+:root[data-runtime="player"].is-mobile-player .rink {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+}
+
+:root[data-runtime="player"].is-mobile-player .sheet-bar {
+  position: fixed;
+  z-index: 32;
+  top: max(8px, env(safe-area-inset-top, 0px));
+  right: max(104px, calc(env(safe-area-inset-right, 0px) + 96px));
+  left: max(8px, env(safe-area-inset-left, 0px));
+  display: flex;
+  width: auto;
+  min-height: 38px;
+  padding: 3px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 12px;
+  background: rgb(39 39 36 / 82%);
+  box-shadow: 0 6px 22px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(12px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+:root[data-runtime="player"].is-mobile-player.player-single-sheet .sheet-bar {
+  display: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .sheet-tabs {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+:root[data-runtime="player"].is-mobile-player .sheet-tab {
+  height: 30px;
+  max-width: 150px;
+  color: #d5d2ca;
+}
+
+:root[data-runtime="player"].is-mobile-player .sheet-tab.is-active {
+  background: #f39200;
+  color: #24221e;
+  box-shadow: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-actions {
+  position: fixed;
+  z-index: 34;
+  top: max(8px, env(safe-area-inset-top, 0px));
+  right: max(8px, env(safe-area-inset-right, 0px));
+  display: flex;
+  gap: 6px;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-actions[hidden] {
+  display: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-actions button {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 12px;
+  background: rgb(39 39 36 / 82%);
+  color: #f7f3eb;
+  box-shadow: 0 6px 22px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(12px);
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-actions button:disabled {
+  display: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-actions svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-start {
+  position: fixed;
+  z-index: 40;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 22px;
+  border: 1px solid #ffb346;
+  border-radius: 999px;
+  background: #f39200;
+  color: #24221e;
+  box-shadow: 0 14px 38px rgb(0 0 0 / 38%), 0 0 0 7px rgb(243 146 0 / 18%);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: .01em;
+  transform: translate(-50%, -50%);
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-start[hidden] {
+  display: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-mobile-start svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-dock,
+:root[data-runtime="player"].is-mobile-player .tactics-dock {
+  position: fixed;
+  z-index: 32;
+  right: auto;
+  bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  width: min(620px, calc(100% - 16px));
+  min-height: 52px;
+  padding: 4px 8px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 15px;
+  background: rgb(39 39 36 / 84%);
+  color: #f7f3eb;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 32%);
+  backdrop-filter: blur(14px);
+  transform: translateX(-50%);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-dock {
+  grid-template-columns: 44px minmax(90px, 1fr) 76px;
+  grid-template-rows: 44px;
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-play-button {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-timeline {
+  grid-column: 2;
+  grid-row: 1;
+  height: 30px;
+  margin: 0 8px;
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-time {
+  grid-column: 3;
+  grid-row: 1;
+  color: #ddd8cf;
+  font-size: 10px;
+}
+
+:root[data-runtime="player"].is-mobile-player .tactics-dock {
+  grid-template-columns: 44px minmax(90px, 1fr) 76px;
+  grid-template-rows: 44px;
+}
+
+:root[data-runtime="player"].is-mobile-player .tactics-play-button {
+  grid-column: 1;
+}
+
+:root[data-runtime="player"].is-mobile-player .tactics-timeline {
+  grid-column: 2;
+  height: 42px;
+}
+
+:root[data-runtime="player"].is-mobile-player .tactics-time {
+  grid-column: 3;
+  color: #ddd8cf;
+  font-size: 10px;
+}
+
+:root[data-runtime="player"].is-mobile-player .notes-panel {
+  position: fixed;
+  z-index: 50;
+  top: max(8px, env(safe-area-inset-top, 0px));
+  right: max(8px, env(safe-area-inset-right, 0px));
+  bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  left: max(8px, env(safe-area-inset-left, 0px));
+  width: auto;
+  max-height: none;
+}
+
+:root[data-runtime="player"].is-mobile-player.mobile-player-controls-hidden .sheet-bar,
+:root[data-runtime="player"].is-mobile-player.mobile-player-controls-hidden .player-mobile-actions {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+:root[data-runtime="player"].is-mobile-player.mobile-player-controls-hidden .playback-dock,
+:root[data-runtime="player"].is-mobile-player.mobile-player-controls-hidden .tactics-dock {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px);
+}
+
+@media (orientation: portrait) {
+  :root[data-runtime="player"].is-mobile-player .rink {
+    width: 100dvh;
+    height: 100vw;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  :root[data-runtime="player"].is-mobile-player .playback-dock,
+  :root[data-runtime="player"].is-mobile-player .tactics-dock {
+    width: min(540px, calc(100% - 118px));
   }
 }
