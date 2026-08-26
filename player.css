@@ -335,6 +335,12 @@
   --player-header-height: 0px;
   --sheet-bar-height: 0px;
   --player-mobile-panel-width: clamp(112px, 15vw, 148px);
+  --player-mobile-timeline-height: calc(44px + env(safe-area-inset-bottom, 0px));
+  --player-mobile-timeline-space: 0px;
+}
+
+:root[data-runtime="player"].is-mobile-player.mobile-player-timeline-visible {
+  --player-mobile-timeline-space: var(--player-mobile-timeline-height);
 }
 
 :root[data-runtime="player"].is-mobile-player body {
@@ -367,6 +373,7 @@
   height: 100%;
   padding: 0;
   overflow: hidden;
+  transition: bottom 180ms ease;
 }
 
 :root[data-runtime="player"].is-mobile-player .rink {
@@ -609,14 +616,15 @@
   :root[data-runtime="player"].is-mobile-player .workspace.is-playback,
   :root[data-runtime="player"].is-mobile-player .workspace.is-tactics {
     top: var(--player-mobile-portrait-panel-height);
-    bottom: 0;
+    bottom: var(--player-mobile-timeline-space);
     height: auto;
   }
 
   :root[data-runtime="player"].is-mobile-player .rink {
-    width: calc(100dvh - var(--player-mobile-portrait-panel-height));
+    width: calc(100dvh - var(--player-mobile-portrait-panel-height) - var(--player-mobile-timeline-space));
     height: 100vw;
     transform: translate(-50%, -50%) rotate(90deg);
+    transition: width 180ms ease;
   }
 
   :root[data-runtime="player"].is-mobile-player .player-mobile-start {
@@ -742,9 +750,18 @@
 
   :root[data-runtime="player"].is-mobile-player .playback-dock,
   :root[data-runtime="player"].is-mobile-player .tactics-dock {
-    right: 7px;
-    left: 7px;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: auto;
+    height: var(--player-mobile-timeline-height);
+    min-height: var(--player-mobile-timeline-height);
+    padding: 0 max(5px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(5px, env(safe-area-inset-left, 0px));
+    border: 0;
+    border-top: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 0;
+    background: rgb(30 30 28 / 96%);
+    box-shadow: 0 -5px 18px rgb(0 0 0 / 18%);
     opacity: 0;
     pointer-events: none;
     transform: translateY(12px);
@@ -759,7 +776,7 @@
 
   :root[data-runtime="player"].is-mobile-player .playback-dock,
   :root[data-runtime="player"].is-mobile-player .tactics-dock {
-    grid-template-columns: minmax(90px, 1fr) 76px;
+    grid-template-columns: minmax(90px, 1fr) 62px;
   }
 
   :root[data-runtime="player"].is-mobile-player .playback-play-button,
@@ -771,6 +788,8 @@
   :root[data-runtime="player"].is-mobile-player .playback-timeline,
   :root[data-runtime="player"].is-mobile-player .tactics-timeline {
     grid-column: 1;
+    height: 36px;
+    margin: 0 4px 0 0;
   }
 
   :root[data-runtime="player"].is-mobile-player .playback-time,
@@ -784,7 +803,9 @@
   :root[data-runtime="player"].is-mobile-player .workspace.is-playback,
   :root[data-runtime="player"].is-mobile-player .workspace.is-tactics {
     right: var(--player-mobile-panel-width);
+    bottom: var(--player-mobile-timeline-space);
     width: auto;
+    height: auto;
   }
 
   :root[data-runtime="player"].is-mobile-player .rink {
@@ -920,9 +941,18 @@
 
   :root[data-runtime="player"].is-mobile-player .playback-dock,
   :root[data-runtime="player"].is-mobile-player .tactics-dock {
-    right: calc(var(--player-mobile-panel-width) + 7px);
-    left: 7px;
+    right: var(--player-mobile-panel-width);
+    bottom: 0;
+    left: 0;
     width: auto;
+    height: var(--player-mobile-timeline-height);
+    min-height: var(--player-mobile-timeline-height);
+    padding: 0 5px env(safe-area-inset-bottom, 0px);
+    border: 0;
+    border-top: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 0;
+    background: rgb(30 30 28 / 96%);
+    box-shadow: 0 -5px 18px rgb(0 0 0 / 18%);
     opacity: 0;
     pointer-events: none;
     transform: translateY(12px);
@@ -936,7 +966,7 @@
   }
 
   :root[data-runtime="player"].is-mobile-player .playback-dock {
-    grid-template-columns: minmax(90px, 1fr) 76px;
+    grid-template-columns: minmax(90px, 1fr) 62px;
   }
 
   :root[data-runtime="player"].is-mobile-player .playback-play-button,
@@ -948,6 +978,8 @@
   :root[data-runtime="player"].is-mobile-player .playback-timeline,
   :root[data-runtime="player"].is-mobile-player .tactics-timeline {
     grid-column: 1;
+    height: 36px;
+    margin: 0 4px 0 0;
   }
 
   :root[data-runtime="player"].is-mobile-player .playback-time,
@@ -956,6 +988,56 @@
   }
 
   :root[data-runtime="player"].is-mobile-player .tactics-dock {
-    grid-template-columns: minmax(90px, 1fr) 76px;
+    grid-template-columns: minmax(90px, 1fr) 62px;
   }
+}
+
+/* Compact mobile scrubber: a 44 px bottom strip with a finger-sized input,
+   but without the extra card margin used by the desktop timeline. */
+:root[data-runtime="player"].is-mobile-player .playback-range,
+:root[data-runtime="player"].is-mobile-player #tacticsRange {
+  height: 36px;
+  margin: 0;
+  opacity: 1;
+  cursor: pointer;
+  touch-action: none;
+  appearance: none;
+  background: transparent;
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-range::-webkit-slider-runnable-track,
+:root[data-runtime="player"].is-mobile-player #tacticsRange::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 28%);
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-range::-webkit-slider-thumb,
+:root[data-runtime="player"].is-mobile-player #tacticsRange::-webkit-slider-thumb {
+  width: 19px;
+  height: 19px;
+  margin-top: -7px;
+  border: 2px solid #f8f3e9;
+  border-radius: 50%;
+  background: #f39200;
+  box-shadow: 0 2px 7px rgb(0 0 0 / 38%);
+  appearance: none;
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-range::-moz-range-track,
+:root[data-runtime="player"].is-mobile-player #tacticsRange::-moz-range-track {
+  height: 5px;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 28%);
+}
+
+:root[data-runtime="player"].is-mobile-player .playback-range::-moz-range-thumb,
+:root[data-runtime="player"].is-mobile-player #tacticsRange::-moz-range-thumb {
+  width: 19px;
+  height: 19px;
+  border: 2px solid #f8f3e9;
+  border-radius: 50%;
+  background: #f39200;
+  box-shadow: 0 2px 7px rgb(0 0 0 / 38%);
 }
