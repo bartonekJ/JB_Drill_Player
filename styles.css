@@ -2662,6 +2662,81 @@ button {
   padding-bottom: 4px;
 }
 
+.export-pdf-content {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  margin: 4px 12px 8px;
+  padding: 10px;
+  border: 1px solid #dce5eb;
+  border-radius: 12px;
+  color: #263746;
+}
+
+.export-pdf-content[hidden] {
+  display: none;
+}
+
+.export-pdf-content legend {
+  padding: 0 5px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.export-pdf-content-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.export-pdf-content-options label {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px;
+  border: 1px solid #dce5eb;
+  border-radius: 10px;
+  background: #f8fafb;
+  cursor: pointer;
+}
+
+.export-pdf-content-options label:has(input:checked) {
+  border-color: #dfa557;
+  background: #fff4e5;
+  box-shadow: inset 0 0 0 1px rgb(223 165 87 / 30%);
+}
+
+.export-pdf-content-options input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin: 1px 0 0;
+  accent-color: var(--accent);
+}
+
+.export-pdf-content-options span {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.export-pdf-content-options strong {
+  font-size: 12px;
+}
+
+.export-pdf-content-options small,
+.export-pdf-content > p {
+  color: #71808b;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.export-pdf-content > p {
+  min-height: 13px;
+  margin: 0 2px;
+}
+
 .export-sheet-dialog-tools button,
 .export-sheet-dialog-footer button {
   min-height: 38px;
@@ -4054,6 +4129,7 @@ button {
 :root[data-theme="dark"] .export-sheet-dialog-tools button,
 :root[data-theme="dark"] .export-sheet-dialog-footer button,
 :root[data-theme="dark"] .export-sheet-dialog-item,
+:root[data-theme="dark"] .export-pdf-content-options label,
 :root[data-theme="dark"] .playback-speed-button,
 :root[data-theme="dark"] .playback-symmetry-button,
 :root[data-theme="dark"] .curve-delete-choice button,
@@ -4062,6 +4138,21 @@ button {
   border-color: var(--line);
   background: var(--panel-raised);
   color: var(--ink);
+}
+
+:root[data-theme="dark"] .export-pdf-content {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .export-pdf-content-options label:has(input:checked) {
+  border-color: var(--accent);
+  background: rgb(229 137 24 / 14%);
+}
+
+:root[data-theme="dark"] .export-pdf-content-options small,
+:root[data-theme="dark"] .export-pdf-content > p {
+  color: var(--muted);
 }
 
 :root[data-theme="dark"] .settings-dialog-header,

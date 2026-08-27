@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=25d87d25f50e" />
+    <link rel="stylesheet" href="./styles.css?v=0ad8ed6e0788" />
     <link rel="stylesheet" href="./player.css?v=75e7ddfe1ffa" />
   </head>
   <body>
@@ -640,6 +640,20 @@
           <button type="button" data-export-sheet-action="all">All</button>
           <button type="button" data-export-sheet-action="none">None</button>
         </div>
+        <fieldset class="export-pdf-content" id="exportPdfContent" hidden>
+          <legend>PDF content</legend>
+          <div class="export-pdf-content-options">
+            <label>
+              <input type="radio" name="export-pdf-content" value="drill" checked />
+              <span><strong>Drill layout</strong><small>Static Edit mode layout</small></span>
+            </label>
+            <label>
+              <input type="radio" name="export-pdf-content" value="tactics" />
+              <span><strong>Tactics snapshot</strong><small>Labels, roster and tactical positions</small></span>
+            </label>
+          </div>
+          <p id="exportPdfContentHint"></p>
+        </fieldset>
         <div class="export-sheet-dialog-list" id="exportSheetDialogList"></div>
         <div class="export-sheet-dialog-footer">
           <button type="button" data-export-sheet-action="cancel">Cancel</button>
@@ -719,6 +733,6 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="./icons/finesse-shapes.js"></script>
-    <script src="./app.js?v=da1a173b5826"></script>
+    <script src="./app.js?v=604798068403"></script>
   </body>
 </html>
