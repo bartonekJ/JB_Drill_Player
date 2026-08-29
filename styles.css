@@ -2288,6 +2288,32 @@ button {
   justify-content: flex-end;
 }
 
+.settings-message-duration {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) 76px;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.settings-message-duration input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.settings-message-duration output {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.settings-control-hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .settings-rosters-body { gap: 10px; }
 .settings-rosters-actions { justify-content: flex-start; }
 
@@ -3177,24 +3203,37 @@ button {
 .toast {
   position: fixed;
   z-index: 30;
-  right: 18px;
-  bottom: 18px;
-  max-width: min(360px, calc(100% - 36px));
-  padding: 10px 14px;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  max-width: min(560px, calc(100% - 32px));
+  padding: 12px 18px;
   border-radius: 12px;
   background: rgba(27, 36, 44, .92);
   color: white;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 650;
+  line-height: 1.4;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(8px);
+  text-align: center;
+  transform: translate(-50%, 8px);
   transition: opacity 150ms ease, transform 150ms ease;
 }
 
 .toast.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 520px) {
+  .settings-message-duration {
+    grid-template-columns: 1fr auto;
+  }
+
+  .settings-message-duration input {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
 }
 
 .curve-delete-choice {
@@ -3563,12 +3602,13 @@ button {
 
 .playback-lane-rail {
   position: absolute;
-  top: 20px;
+  top: 11px;
   right: 0;
   left: 0;
-  height: 2px;
+  height: 1px;
   border-radius: 99px;
   background: rgb(80 107 126 / 14%);
+  box-shadow: 0 19px 0 rgb(80 107 126 / 14%);
 }
 
 .playback-queue-shift {
@@ -3631,12 +3671,101 @@ button {
 
 .playback-block {
   position: absolute;
-  top: 15px;
-  height: 12px;
+  top: 25px;
+  height: 10px;
   min-width: 3px;
   border-radius: 99px;
+  background: transparent;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.playback-block-event {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 3px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--block-color) 72%, transparent);
+  pointer-events: none;
+}
+
+.playback-block-action.is-selected .playback-block-event,
+.playback-block-action.is-dragging .playback-block-event {
   background: var(--block-color);
-  opacity: .72;
+}
+
+.playback-block-track .playback-block-event {
+  overflow: hidden;
+  background: transparent;
+}
+
+.playback-block-track .playback-block-event::before {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.playback-block-track[data-movement-type="forward"] .playback-block-event::before {
+  top: 4px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 99px;
+  background: var(--block-color);
+}
+
+.playback-block-track[data-movement-type="forwardPuck"] .playback-block-event::before {
+  inset: 0;
+  background: var(--block-color);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M0 5 Q2 1 4 5 T8 5 T12 5 T16 5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") left center / 16px 10px repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M0 5 Q2 1 4 5 T8 5 T12 5 T16 5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") left center / 16px 10px repeat-x;
+}
+
+.playback-block-track[data-movement-type="backward"] .playback-block-event::before,
+.playback-block-track[data-movement-type="backwardPuck"] .playback-block-event::before {
+  inset: 0;
+  background: var(--block-color);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='10' viewBox='0 0 32 10'%3E%3Cpath d='M3 4 Q13 0 23 4 M-13 6 Q-3 10 7 6 M19 6 Q29 10 39 6' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") left center / 32px 10px repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='10' viewBox='0 0 32 10'%3E%3Cpath d='M3 4 Q13 0 23 4 M-13 6 Q-3 10 7 6 M19 6 Q29 10 39 6' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") left center / 32px 10px repeat-x;
+}
+
+.playback-block-track[data-movement-type="backwardPuck"] .playback-block-event::after {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--block-color) 0 2px,
+    transparent 2px 8px
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.playback-block-track[data-movement-type="lateral"] .playback-block-event::before {
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 5px,
+    var(--block-color) 5px 7px,
+    transparent 7px 12px
+  );
+}
+
+.playback-block-wait {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  min-width: 2px;
+  box-sizing: border-box;
+  border: 1px dashed color-mix(in srgb, var(--block-color) 72%, transparent);
+  border-radius: 99px 0 0 99px;
+  background: color-mix(in srgb, var(--block-color) 15%, transparent);
   pointer-events: none;
 }
 
@@ -3649,14 +3778,14 @@ button {
 .playback-block-track.is-editable::after {
   content: "";
   position: absolute;
-  inset: -9px 0;
+  inset: -4px 0 -7px;
 }
 
 .playback-block-track.is-editable::before {
   content: "";
   position: absolute;
   z-index: 1;
-  top: -3px;
+  top: -4px;
   right: -1px;
   width: 7px;
   height: 18px;
@@ -3698,10 +3827,8 @@ button {
 }
 
 .playback-block-action {
-  top: 16px;
-  height: 10px;
-  outline: 1px dashed color-mix(in srgb, var(--block-color) 74%, transparent);
-  outline-offset: 2px;
+  top: 7px;
+  height: 9px;
 }
 
 .playback-block-action.is-editable {
@@ -3713,7 +3840,7 @@ button {
 .playback-block-action::after {
   content: "";
   position: absolute;
-  inset: -7px 0;
+  inset: -7px 0 -4px;
 }
 
 .playback-block-action.is-editable::before {
@@ -3738,7 +3865,6 @@ button {
 .playback-block-action.is-selected {
   z-index: 3;
   opacity: 1;
-  outline-style: solid;
   box-shadow:
     0 0 0 2px #fff,
     0 0 0 4px color-mix(in srgb, var(--block-color) 72%, var(--accent)),
@@ -3747,7 +3873,6 @@ button {
 
 .playback-block-action.is-dragging {
   opacity: 1;
-  outline-style: solid;
 }
 
 .playback-block-action.is-dragging::after {

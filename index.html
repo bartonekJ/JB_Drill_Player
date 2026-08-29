@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=0ad8ed6e0788" />
+    <link rel="stylesheet" href="./styles.css?v=2fe56213f6d1" />
     <link rel="stylesheet" href="./player.css?v=75e7ddfe1ffa" />
   </head>
   <body>
@@ -561,6 +561,22 @@
               <div class="settings-palette" id="settingsPalette"></div>
             </div>
           </details>
+          <details class="settings-section" data-settings-section="messages" data-settings-default="closed">
+            <summary class="settings-section-heading settings-section-summary">
+              <div>
+                <strong>Messages</strong>
+                <span>Notification display duration</span>
+              </div>
+            </summary>
+            <div class="settings-section-body">
+              <label class="settings-message-duration">
+                <span>Visibility timeout</span>
+                <input id="settingsMessageDuration" type="range" min="1000" max="10000" step="500" value="2000" />
+                <output id="settingsMessageDurationValue">2000 ms</output>
+              </label>
+              <small class="settings-control-hint">How long confirmation and error messages remain visible.</small>
+            </div>
+          </details>
           <details class="settings-section" data-settings-section="storage" data-settings-default="open" open>
             <summary class="settings-section-heading settings-section-summary">
               <div>
@@ -732,7 +748,8 @@
     </section>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    <script src="./icons/rink-image-data.js"></script>
     <script src="./icons/finesse-shapes.js"></script>
-    <script src="./app.js?v=604798068403"></script>
+    <script src="./app.js?v=ca3a54ba8868"></script>
   </body>
 </html>
