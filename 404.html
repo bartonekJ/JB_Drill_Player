@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=2fe56213f6d1" />
+    <link rel="stylesheet" href="./styles.css?v=be3d53c4bf06" />
     <link rel="stylesheet" href="./player.css?v=75e7ddfe1ffa" />
   </head>
   <body>
@@ -152,25 +152,29 @@
         <div class="shelf-actions" aria-label="History and canvas">
           <div class="persistent-tools" id="persistentTools" aria-label="Colors and editing"></div>
           <span class="shelf-actions-divider" aria-hidden="true"></span>
-          <button class="icon-button" id="undoButton" type="button" aria-label="Undo" title="Undo (Ctrl+Z)" disabled>
+          <button class="icon-button labeled-icon-button" id="undoButton" type="button" aria-label="Undo" title="Undo (Ctrl+Z)" disabled>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M9 8 5 12l4 4M6 12h7a5 5 0 0 1 5 5" />
             </svg>
+            <span>Undo</span>
           </button>
-          <button class="icon-button" id="redoButton" type="button" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled>
+          <button class="icon-button labeled-icon-button" id="redoButton" type="button" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="m15 8 4 4-4 4m3-4h-7a5 5 0 0 0-5 5" />
             </svg>
+            <span>Redo</span>
           </button>
-          <button class="icon-button" id="documentButton" type="button" aria-label="File" title="Export / Import">
+          <button class="icon-button labeled-icon-button" id="documentButton" type="button" aria-label="File" title="File">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 3h7l4 4v14H7zM14 3v5h5M10 12h5m-2-2 2 2-2 2M15 17h-5m2-2-2 2 2 2" />
             </svg>
+            <span>File</span>
           </button>
-          <button class="icon-button clear-button" id="clearButton" type="button" aria-label="Clear canvas" title="Clear canvas" disabled>
+          <button class="icon-button labeled-icon-button clear-button" id="clearButton" type="button" aria-label="Clear canvas" title="Clear canvas" disabled>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M5 7h14M9 7V5h6v2m-8 0 1 12h8l1-12M10 10v6m4-6v6" />
             </svg>
+            <span>Clear</span>
           </button>
         </div>
       </section>
@@ -227,6 +231,7 @@
         </div>
         <div class="sheet-menu" id="sheetMenu" hidden>
           <div class="sheet-menu-panel" data-sheet-menu-panel="manage">
+            <button class="context-help-button sheet-menu-help" type="button" data-help-topic="interface/session-drill-menu" aria-label="Help for Session and drill menu" title="Help">?</button>
             <label class="sheet-menu-field">
               <span>File</span>
               <input class="document-name-input" id="documentNameInput" type="text" maxlength="80" placeholder="File name" aria-label="File name" autocomplete="off" spellcheck="false" />
@@ -341,6 +346,7 @@
             <g id="brushCursorLayer"></g>
           </g>
         </svg>
+        <div class="player-license-watermark" id="playerLicenseWatermark" aria-hidden="true" hidden>JB_DRILL FREE</div>
 
         <button class="player-mobile-start" id="playerMobileStartButton" type="button" hidden>
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -517,16 +523,25 @@
       <button type="button" role="menuitem" data-clear-scope="paint">Clear Paint</button>
     </div>
     <div class="clear-menu document-menu" id="documentMenu" role="menu" aria-label="File" hidden>
-      <button type="button" role="menuitem" data-document-action="new">New File</button>
-      <button type="button" role="menuitem" data-document-action="library">Drill Library</button>
-      <button type="button" role="menuitem" data-document-action="export">Export .jbdrill</button>
-      <button type="button" role="menuitem" data-document-action="import">Import .jbdrill</button>
-      <button type="button" role="menuitem" data-document-action="play">Share Player link</button>
-      <button type="button" role="menuitem" data-document-action="play-file">Export .jbplay</button>
-      <button type="button" role="menuitem" data-document-action="pdf">Export PDF</button>
-      <button type="button" role="menuitem" data-document-action="video">Export Video</button>
+      <button type="button" role="menuitem" data-document-action="new">New</button>
+      <button type="button" role="menuitem" data-document-action="import">Open</button>
+      <button type="button" role="menuitem" data-document-action="export">Save</button>
+      <button type="button" role="menuitem" data-document-action="play">Share <small>JB_Play Link</small></button>
+      <div class="document-menu-divider" aria-hidden="true"></div>
+      <div class="document-export-menu">
+        <button class="document-submenu-trigger" type="button" role="menuitem" data-document-action="export-menu" aria-expanded="false">
+          <span>Export</span><span aria-hidden="true">›</span>
+        </button>
+        <div class="document-export-options" role="menu" aria-label="Export formats" hidden>
+          <button type="button" role="menuitem" data-document-action="pdf">PDF</button>
+          <button type="button" role="menuitem" data-document-action="video">MP4</button>
+          <button type="button" role="menuitem" data-document-action="play-file">JB_Play</button>
+        </div>
+      </div>
       <div class="document-file-list" id="documentFileList" hidden></div>
+      <div class="document-menu-divider" aria-hidden="true"></div>
       <button class="document-settings-action" type="button" role="menuitem" data-document-action="settings">Settings</button>
+      <button type="button" role="menuitem" data-document-action="help">Help</button>
     </div>
     <section class="settings-dialog-backdrop" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsDialogTitle" hidden>
       <div class="settings-dialog-card">
@@ -535,7 +550,10 @@
             <strong id="settingsDialogTitle">Settings</strong>
             <span>App-wide preferences</span>
           </div>
-          <button type="button" data-settings-action="close" aria-label="Close Settings">×</button>
+          <div class="dialog-header-actions">
+            <button class="context-help-button" type="button" data-help-topic="fundamentals/workspace-and-exports" aria-label="Settings Help" title="Help">?</button>
+            <button class="dialog-close-button" type="button" data-settings-action="close" aria-label="Close Settings">×</button>
+          </div>
         </header>
         <div class="settings-dialog-content">
           <details class="settings-section" data-settings-section="appearance" data-settings-default="open" open>
@@ -684,8 +702,14 @@
             <strong id="drillLibraryTitle">Drill Library</strong>
             <span id="drillLibraryStatus">Loading drills…</span>
           </div>
-          <button type="button" data-library-action="close" aria-label="Close Drill Library">×</button>
+          <div class="dialog-header-actions">
+            <button class="context-help-button" type="button" data-help-topic="interface/drill-resources" aria-label="Drill Library Help" title="Help">?</button>
+            <button class="dialog-close-button" type="button" data-library-action="close" aria-label="Close Drill Library">×</button>
+          </div>
         </header>
+        <div class="drill-library-license-notice" id="drillLibraryLicenseNotice" role="note" hidden>
+          Free plan: only Included drills are available, and only the first two selected drills that fit will be added to the session.
+        </div>
         <div class="drill-library-filters">
           <div class="drill-library-filter-stack">
             <section>
@@ -746,10 +770,23 @@
         </div>
       </div>
     </section>
+    <section class="help-dialog" id="helpDialog" role="dialog" aria-modal="true" aria-labelledby="helpDialogTitle" hidden>
+      <header class="help-dialog-header">
+        <div>
+          <img src="./icons/app-icon-192.png" alt="" />
+          <span><strong id="helpDialogTitle">Help</strong><small>JB_Drill User Guide</small></span>
+        </div>
+        <button type="button" data-help-action="close" aria-label="Close Help">×</button>
+      </header>
+      <iframe id="helpFrame" title="JB_Drill Help"></iframe>
+    </section>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="./icons/rink-image-data.js"></script>
     <script src="./icons/finesse-shapes.js"></script>
-    <script src="./app.js?v=ca3a54ba8868"></script>
+    <script src="./licensing/config.js?v=e728f297cb0b"></script>
+    <script src="./licensing/core.js?v=198dc0e27ed3"></script>
+    <script src="./licensing/runtime.js?v=7e7e2992735a"></script>
+    <script src="./app.js?v=d42c3878e28c"></script>
   </body>
 </html>

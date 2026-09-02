@@ -1,10 +1,13 @@
-const CACHE_NAME = "jb-drill-player-v9";
+const CACHE_NAME = "jb-drill-player-v10";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./player.css",
   "./app.js",
+  "./licensing/config.js",
+  "./licensing/core.js",
+  "./licensing/runtime.js",
   "./manifest.webmanifest",
   "./icons/finesse-shapes.js",
   "./icons/JB_Logo.svg",
