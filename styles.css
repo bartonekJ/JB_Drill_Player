@@ -1644,20 +1644,8 @@ button {
   pointer-events: none;
 }
 
-.player-license-watermark-stamp rect {
-  fill: rgb(219 48 6 / 13%);
-  stroke: rgb(219 48 6 / 24%);
-  stroke-width: 7;
-}
-
-.player-license-watermark-label {
-  fill: rgb(219 48 6 / 28%);
-  font-family: Inter, "Segoe UI", sans-serif;
-  font-size: 104px;
-  font-weight: 900;
-  letter-spacing: 8px;
-  text-anchor: middle;
-  dominant-baseline: middle;
+.player-license-watermark-tiles {
+  fill: url("#licenseWatermarkPattern");
 }
 
 .player-license-watermark[hidden] { display: none; }
