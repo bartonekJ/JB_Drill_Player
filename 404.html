@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=be3d53c4bf06" />
+    <link rel="stylesheet" href="./styles.css?v=86a6ce8820a2" />
     <link rel="stylesheet" href="./player.css?v=75e7ddfe1ffa" />
   </head>
   <body>
@@ -344,9 +344,20 @@
             <g id="previewLayer"></g>
             <g id="paintPreviewLayer"></g>
             <g id="brushCursorLayer"></g>
+            <g
+              class="player-license-watermark"
+              id="playerLicenseWatermark"
+              clip-path="url(#rinkClip)"
+              aria-hidden="true"
+              hidden
+            >
+              <g class="player-license-watermark-stamp" transform="rotate(-16 600 320)">
+                <rect x="150" y="250" width="900" height="140" rx="24" />
+                <text class="player-license-watermark-label" x="600" y="324">JB_DRILL FREE</text>
+              </g>
+            </g>
           </g>
         </svg>
-        <div class="player-license-watermark" id="playerLicenseWatermark" aria-hidden="true" hidden>JB_DRILL FREE</div>
 
         <button class="player-mobile-start" id="playerMobileStartButton" type="button" hidden>
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -787,6 +798,6 @@
     <script src="./licensing/config.js?v=e728f297cb0b"></script>
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
     <script src="./licensing/runtime.js?v=7e7e2992735a"></script>
-    <script src="./app.js?v=d42c3878e28c"></script>
+    <script src="./app.js?v=3243c661a922"></script>
   </body>
 </html>

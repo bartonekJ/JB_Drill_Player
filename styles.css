@@ -1641,23 +1641,23 @@ button {
 }
 
 .player-license-watermark {
-  position: absolute;
-  z-index: 12;
-  left: 50%;
-  top: 50%;
-  max-width: 82%;
-  padding: .18em .55em;
-  border: .08em solid currentColor;
-  border-radius: .24em;
-  color: rgb(219 48 6 / 28%);
-  font-size: clamp(28px, 8vw, 110px);
-  font-weight: 900;
-  letter-spacing: .08em;
-  line-height: 1;
   pointer-events: none;
-  text-align: center;
-  transform: translate(-50%, -50%) rotate(-16deg);
-  white-space: nowrap;
+}
+
+.player-license-watermark-stamp rect {
+  fill: rgb(219 48 6 / 13%);
+  stroke: rgb(219 48 6 / 24%);
+  stroke-width: 7;
+}
+
+.player-license-watermark-label {
+  fill: rgb(219 48 6 / 28%);
+  font-family: Inter, "Segoe UI", sans-serif;
+  font-size: 104px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  text-anchor: middle;
+  dominant-baseline: middle;
 }
 
 .player-license-watermark[hidden] { display: none; }
