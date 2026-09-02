@@ -293,13 +293,14 @@
             <pattern id="centerLinePattern" width="14" height="14" patternUnits="userSpaceOnUse">
               <rect width="7" height="14" fill="#dc4855" />
             </pattern>
-            <pattern
-              id="licenseWatermarkPattern"
-              x="40"
-              y="40"
+            <mask
+              id="licenseWatermarkTileMask"
+              x="0"
+              y="0"
               width="224"
               height="224"
-              patternUnits="userSpaceOnUse"
+              maskUnits="userSpaceOnUse"
+              style="mask-type: alpha"
             >
               <image
                 href="./icons/watermark.png"
@@ -308,6 +309,24 @@
                 width="224"
                 height="224"
                 preserveAspectRatio="xMidYMid meet"
+              />
+            </mask>
+            <pattern
+              id="licenseWatermarkPattern"
+              x="40"
+              y="40"
+              width="224"
+              height="224"
+              patternUnits="userSpaceOnUse"
+            >
+              <rect
+                class="player-license-watermark-tint"
+                x="0"
+                y="0"
+                width="224"
+                height="224"
+                fill="rgb(20, 20, 20)"
+                mask="url(#licenseWatermarkTileMask)"
               />
             </pattern>
             <filter id="objectShadow" x="-40%" y="-40%" width="180%" height="180%">
@@ -820,6 +839,6 @@
     <script src="./licensing/config.js?v=e728f297cb0b"></script>
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
     <script src="./licensing/runtime.js?v=7e7e2992735a"></script>
-    <script src="./app.js?v=eed2b8e6f859"></script>
+    <script src="./app.js?v=9c966e8b105b"></script>
   </body>
 </html>
