@@ -173,53 +173,6 @@
   color: var(--control-text);
 }
 
-.player-header-actions .player-desktop-control {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 40px;
-  padding-inline: 12px;
-  border-color: var(--control-border);
-  background: var(--control-bg);
-  color: var(--control-text);
-}
-
-.player-header-actions .player-desktop-control[hidden] {
-  display: none;
-}
-
-.player-desktop-control svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.player-desktop-play-button .player-control-play-icon {
-  fill: currentColor;
-  stroke: none;
-}
-
-.player-desktop-play-button .player-control-pause-icon,
-.player-desktop-play-button.is-playing .player-control-play-icon {
-  display: none;
-}
-
-.player-desktop-play-button.is-playing .player-control-pause-icon {
-  display: inline;
-  fill: currentColor;
-  stroke: none;
-}
-
-.player-header-actions .player-desktop-loop-button.is-active {
-  border-color: #d47d00;
-  color: #f39200;
-}
-
 .player-header-actions button:disabled {
   opacity: .42;
 }
@@ -282,7 +235,7 @@
 }
 
 :root[data-runtime="player"] .playback-dock {
-  grid-template-columns: 52px 68px minmax(100px, 1fr) 90px;
+  grid-template-columns: 44px 36px 36px 68px minmax(100px, 1fr) 90px;
   grid-template-rows: 48px;
   min-height: 58px;
   padding: 5px max(8px, env(safe-area-inset-right)) max(5px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
@@ -294,20 +247,64 @@
 }
 
 :root[data-runtime="player"] .playback-speed-button {
-  grid-column: 2;
+  grid-column: 4;
   grid-row: 1;
 }
 
 :root[data-runtime="player"] .playback-timeline {
-  grid-column: 3;
+  grid-column: 5;
   grid-row: 1;
   height: 30px;
   margin-inline: 5px 10px;
 }
 
 :root[data-runtime="player"] .playback-time {
-  grid-column: 4;
+  grid-column: 6;
   grid-row: 1;
+}
+
+:root[data-runtime="player"] .tactics-dock {
+  grid-template-columns: 44px 36px 36px 68px minmax(100px, 1fr) 116px;
+  grid-template-rows: 48px;
+  min-height: 58px;
+  padding-block: 5px;
+}
+
+:root[data-runtime="player"] .tactics-play-button { grid-column: 1; grid-row: 1; }
+:root[data-runtime="player"] .tactics-dock .tactics-speed-button { grid-column: 4; grid-row: 1; }
+:root[data-runtime="player"] .tactics-dock .tactics-timeline { grid-column: 5; grid-row: 1; height: 30px; }
+:root[data-runtime="player"] .tactics-dock .tactics-time { grid-column: 6; grid-row: 1; }
+
+:root[data-runtime="player"] .player-desktop-dock-button:not([hidden]) {
+  display: grid;
+  grid-row: 1;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--control-border);
+  border-radius: 9px;
+  background: var(--control-bg);
+  color: var(--control-text);
+  cursor: pointer;
+}
+
+:root[data-runtime="player"] .player-desktop-loop-button { grid-column: 2; }
+:root[data-runtime="player"] .player-desktop-fullscreen-button { grid-column: 3; }
+
+:root[data-runtime="player"] .player-desktop-dock-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:root[data-runtime="player"] .player-desktop-loop-button.is-active {
+  border-color: #d47d00;
+  color: #f39200;
 }
 
 :root[data-runtime="player"] .notes-panel {
@@ -338,16 +335,6 @@
     display: none;
   }
 
-  .player-header-actions .player-desktop-control {
-    min-width: 34px;
-    min-height: 36px;
-    padding-inline: 8px;
-  }
-
-  .player-header-actions .player-desktop-control span {
-    display: none;
-  }
-
   .player-brand img {
     width: 34px;
     height: 34px;
@@ -368,7 +355,7 @@
   }
 
   :root[data-runtime="player"] .playback-dock {
-    grid-template-columns: 44px minmax(90px, 1fr) 76px;
+    grid-template-columns: 40px 34px 34px minmax(90px, 1fr) 76px;
   }
 
   :root[data-runtime="player"] .playback-speed-button {
@@ -376,13 +363,21 @@
   }
 
   :root[data-runtime="player"] .playback-timeline {
-    grid-column: 2;
+    grid-column: 4;
   }
 
   :root[data-runtime="player"] .playback-time {
-    grid-column: 3;
+    grid-column: 5;
     font-size: 10px;
   }
+
+  :root[data-runtime="player"] .tactics-dock {
+    grid-template-columns: 40px 34px 34px minmax(90px, 1fr) 76px;
+  }
+
+  :root[data-runtime="player"] .tactics-dock .tactics-speed-button { display: none; }
+  :root[data-runtime="player"] .tactics-dock .tactics-timeline { grid-column: 4; }
+  :root[data-runtime="player"] .tactics-dock .tactics-time { grid-column: 5; font-size: 10px; }
 }
 
 /* Phone-only cinema mode. The editor, installed apps, tablets and desktop
@@ -394,6 +389,10 @@
   --player-mobile-panel-width: clamp(112px, 15vw, 148px);
   --player-mobile-timeline-height: calc(44px + env(safe-area-inset-bottom, 0px));
   --player-mobile-timeline-space: 0px;
+}
+
+:root[data-runtime="player"].is-mobile-player .player-desktop-dock-button {
+  display: none !important;
 }
 
 :root[data-runtime="player"].is-mobile-player.mobile-player-timeline-visible {

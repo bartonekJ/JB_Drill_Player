@@ -13,7 +13,7 @@
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
     <link rel="stylesheet" href="./styles.css?v=5c10938a4e41" />
-    <link rel="stylesheet" href="./player.css?v=2e3c73006776" />
+    <link rel="stylesheet" href="./player.css?v=849ab04ee8e6" />
   </head>
   <body>
     <section class="player-welcome" id="playerWelcome" aria-labelledby="playerWelcomeTitle" hidden>
@@ -35,18 +35,6 @@
       </div>
       <strong class="player-document-title" id="playerDocumentTitle">No file open</strong>
       <div class="player-header-actions">
-        <button class="player-desktop-control player-desktop-play-button" id="playerDesktopPlayButton" type="button" aria-label="Play" title="Play">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="player-control-play-icon" d="M8 5v14l11-7z" /><path class="player-control-pause-icon" d="M7 5h4v14H7zM14 5h4v14h-4z" /></svg>
-          <span>Play</span>
-        </button>
-        <button class="player-desktop-control player-desktop-loop-button" id="playerDesktopLoopButton" type="button" aria-label="Loop mode: Loop" aria-pressed="true" title="Loop mode: Loop">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 7H7a4 4 0 0 0-4 4v1M6 4 3 7l3 3M6 17h11a4 4 0 0 0 4-4v-1M18 20l3-3-3-3" /></svg>
-          <span>Loop</span>
-        </button>
-        <button class="player-desktop-control" id="playerDesktopFullscreenButton" type="button" aria-label="Enter full screen" title="Enter full screen">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
-          <span>Fullscreen</span>
-        </button>
         <button id="playerNotesButton" type="button" aria-expanded="false">Notes</button>
         <button class="player-open-button" id="playerOpenButton" type="button">Open .jbplay</button>
       </div>
@@ -542,6 +530,12 @@
               <path class="playback-pause-icon" d="M7 5h4v14H7zM14 5h4v14h-4z" />
             </svg>
           </button>
+          <button class="player-desktop-dock-button player-desktop-loop-button" id="playerDesktopLoopButton" type="button" aria-label="Loop mode: Loop" aria-pressed="true" title="Loop mode: Loop" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 7H7a4 4 0 0 0-4 4v1M6 4 3 7l3 3M6 17h11a4 4 0 0 0 4-4v-1M18 20l3-3-3-3" /></svg>
+          </button>
+          <button class="player-desktop-dock-button player-desktop-fullscreen-button" id="playerDesktopFullscreenButton" type="button" aria-label="Enter full screen" title="Enter full screen" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
+          </button>
           <button
             class="playback-symmetry-button"
             id="playbackSymmetryButton"
@@ -974,6 +968,6 @@
     <script src="./licensing/config.js?v=f0674199c31b"></script>
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
     <script src="./licensing/runtime.js?v=056c63f218bd"></script>
-    <script src="./app.js?v=590c03496f8b"></script>
+    <script src="./app.js?v=ec2608f3880d"></script>
   </body>
 </html>
