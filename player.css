@@ -167,10 +167,57 @@
   gap: 7px;
 }
 
-.player-header-actions button:first-child {
+.player-header-actions #playerNotesButton {
   border-color: var(--control-border);
   background: var(--control-bg);
   color: var(--control-text);
+}
+
+.player-header-actions .player-desktop-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding-inline: 12px;
+  border-color: var(--control-border);
+  background: var(--control-bg);
+  color: var(--control-text);
+}
+
+.player-header-actions .player-desktop-control[hidden] {
+  display: none;
+}
+
+.player-desktop-control svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.player-desktop-play-button .player-control-play-icon {
+  fill: currentColor;
+  stroke: none;
+}
+
+.player-desktop-play-button .player-control-pause-icon,
+.player-desktop-play-button.is-playing .player-control-play-icon {
+  display: none;
+}
+
+.player-desktop-play-button.is-playing .player-control-pause-icon {
+  display: inline;
+  fill: currentColor;
+  stroke: none;
+}
+
+.player-header-actions .player-desktop-loop-button.is-active {
+  border-color: #d47d00;
+  color: #f39200;
 }
 
 .player-header-actions button:disabled {
@@ -288,6 +335,16 @@
 
   .player-brand span,
   .player-header-actions #playerNotesButton {
+    display: none;
+  }
+
+  .player-header-actions .player-desktop-control {
+    min-width: 34px;
+    min-height: 36px;
+    padding-inline: 8px;
+  }
+
+  .player-header-actions .player-desktop-control span {
     display: none;
   }
 

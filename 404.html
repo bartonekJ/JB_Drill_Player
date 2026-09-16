@@ -12,8 +12,8 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=08e4c58b65e4" />
-    <link rel="stylesheet" href="./player.css?v=75e7ddfe1ffa" />
+    <link rel="stylesheet" href="./styles.css?v=5c10938a4e41" />
+    <link rel="stylesheet" href="./player.css?v=2e3c73006776" />
   </head>
   <body>
     <section class="player-welcome" id="playerWelcome" aria-labelledby="playerWelcomeTitle" hidden>
@@ -35,6 +35,18 @@
       </div>
       <strong class="player-document-title" id="playerDocumentTitle">No file open</strong>
       <div class="player-header-actions">
+        <button class="player-desktop-control player-desktop-play-button" id="playerDesktopPlayButton" type="button" aria-label="Play" title="Play">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="player-control-play-icon" d="M8 5v14l11-7z" /><path class="player-control-pause-icon" d="M7 5h4v14H7zM14 5h4v14h-4z" /></svg>
+          <span>Play</span>
+        </button>
+        <button class="player-desktop-control player-desktop-loop-button" id="playerDesktopLoopButton" type="button" aria-label="Loop mode: Loop" aria-pressed="true" title="Loop mode: Loop">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 7H7a4 4 0 0 0-4 4v1M6 4 3 7l3 3M6 17h11a4 4 0 0 0 4-4v-1M18 20l3-3-3-3" /></svg>
+          <span>Loop</span>
+        </button>
+        <button class="player-desktop-control" id="playerDesktopFullscreenButton" type="button" aria-label="Enter full screen" title="Enter full screen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
+          <span>Fullscreen</span>
+        </button>
         <button id="playerNotesButton" type="button" aria-expanded="false">Notes</button>
         <button class="player-open-button" id="playerOpenButton" type="button">Open .jbplay</button>
       </div>
@@ -187,7 +199,7 @@
         </button>
         <nav class="sheet-tabs" id="sheetTabs" aria-label="Drill sheets"></nav>
         <button class="sheet-add-button" id="sheetAddButton" type="button" aria-label="Add drill sheet" title="Add drill sheet">+</button>
-        <button class="sheet-roster-button" id="sheetRosterButton" type="button" aria-label="Insert roster" title="Insert roster" aria-expanded="false" hidden>
+        <button class="sheet-roster-button" id="sheetRosterButton" type="button" aria-label="Insert lineup" title="Insert roster or tactics template" aria-expanded="false" hidden>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8-1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3 19v-2.5C3 14.6 5.2 13 8 13s5 1.6 5 3.5V19Zm10.5 0v-2c0-1.2-.5-2.3-1.5-3.2 1-.5 2.4-.8 4-.8 2.8 0 5 1.5 5 3.4V19Z" /></svg>
           <span>Roster</span>
         </button>
@@ -205,7 +217,7 @@
         </button>
         <div class="sheet-roster-popover" id="sheetRosterPopover" hidden>
           <header>
-            <strong>Insert roster</strong>
+            <strong>Insert lineup</strong>
             <button type="button" data-roster-popover-action="close" aria-label="Close roster list">×</button>
           </header>
           <div class="sheet-roster-list" id="sheetRosterList"></div>
@@ -374,6 +386,8 @@
             <g id="paintLayer"></g>
             <g id="strokeLayer"></g>
             <g id="tacticsFormationLayer"></g>
+            <g id="tacticsTrajectoryLayer"></g>
+            <g id="tacticsActionLayer"></g>
             <g id="objectLayer"></g>
             <g id="tacticsActorLayer"></g>
             <g id="automationLayer"></g>
@@ -500,15 +514,25 @@
           </button>
           <button class="tactics-key-nav-button" id="tacticsPrevKeyButton" type="button" aria-label="Previous keyframe" title="Previous keyframe">‹</button>
           <button class="tactics-key-nav-button" id="tacticsNextKeyButton" type="button" aria-label="Next keyframe" title="Next keyframe">›</button>
+          <button class="playback-speed-button tactics-speed-button" id="tacticsSpeedButton" type="button" aria-label="Global speed">
+            <small>Speed</small>
+            <strong data-playback-speed>100%</strong>
+          </button>
           <div class="tactics-timeline">
-            <input id="tacticsRange" type="range" min="0" max="10" step="0.01" value="0" aria-label="Tactical time" />
+            <div class="tactics-puck-track" id="tacticsPuckTrack" aria-label="Puck possession track"></div>
+            <input id="tacticsRange" type="range" min="0" max="3000" step="1" value="0" aria-label="Tactical time (frames)" />
             <div class="tactics-key-ticks" id="tacticsKeyTicks"></div>
           </div>
           <div class="tactics-time" id="tacticsTime">
-            <output id="tacticsCurrentTime">0.0</output>
+            <output id="tacticsCurrentTime">0.00 s · frame 0</output>
             <span>/</span>
-            <input id="tacticsDurationInput" type="number" min="0.5" max="300" step="0.5" value="10.0" aria-label="Animation duration in seconds" />
+            <input id="tacticsDurationInput" type="number" min="0.5" max="300" step="0.1" value="10.0" aria-label="Animation duration in seconds" />
             <span>s</span>
+          </div>
+          <div class="playback-speed-menu tactics-speed-menu" id="tacticsSpeedMenu" hidden>
+            <label for="tacticsSpeedRange">Global Speed</label>
+            <output data-playback-speed-output>100%</output>
+            <input id="tacticsSpeedRange" type="range" min="1" max="500" step="1" value="100" aria-label="Global speed percent" />
           </div>
         </div>
         <div class="playback-dock" id="playbackDock" aria-label="Timeline" hidden>
@@ -526,7 +550,9 @@
             title="Symmetric second phase"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 7h14M14 4l3 3-3 3M21 17H7M10 14l-3 3 3 3" />
+              <path class="playback-symmetry-curve" d="M2.5 19C8.5 17 4 11 9.5 6" />
+              <path class="playback-symmetry-axis" d="M12 2v20" />
+              <path class="playback-symmetry-curve" d="M21.5 19C15.5 17 20 11 14.5 6" />
             </svg>
           </button>
           <button class="playback-speed-button" id="playbackSpeedButton" type="button" aria-label="Global speed">
@@ -568,6 +594,14 @@
       <button type="button" data-delete-scope="segment">Segment</button>
       <button type="button" data-delete-scope="event">Entire event</button>
     </div>
+    <div class="curve-delete-choice tactics-puck-action-choice" id="tacticsPuckActionChoice" hidden>
+      <button type="button" data-puck-action-type="pass">Pass</button>
+      <button type="button" data-puck-action-type="shot">Shot</button>
+    </div>
+    <div class="curve-delete-choice tactics-preset-replace-choice" id="tacticsPresetReplaceChoice" hidden>
+      <button type="button" data-preset-action="replace">Replace</button>
+      <button type="button" data-preset-action="cancel">Cancel</button>
+    </div>
     <div class="clear-menu" id="clearMenu" role="menu" aria-label="Clear" hidden>
       <button type="button" role="menuitem" data-clear-scope="all">Clear All</button>
       <button type="button" role="menuitem" data-clear-scope="selected">Clear Selected</button>
@@ -602,6 +636,7 @@
           <div>
             <strong id="settingsDialogTitle">Settings</strong>
             <span>App-wide preferences</span>
+            <span id="settingsVersionInfo" hidden></span>
           </div>
           <div class="dialog-header-actions">
             <button class="context-help-button" type="button" data-help-topic="fundamentals/workspace-and-exports" aria-label="Settings Help" title="Help">?</button>
@@ -646,6 +681,105 @@
                 <output id="settingsMessageDurationValue">2000 ms</output>
               </label>
               <small class="settings-control-hint">How long confirmation and error messages remain visible.</small>
+            </div>
+          </details>
+          <details class="settings-section" data-settings-section="license" data-settings-default="closed">
+            <summary class="settings-section-heading settings-section-summary">
+              <div>
+                <strong>License &amp; devices</strong>
+                <span id="settingsLicenseSummary">Free · This installation</span>
+              </div>
+            </summary>
+            <div class="settings-section-body settings-license-body">
+              <div class="settings-license-overview">
+                <div>
+                  <small>Current plan</small>
+                  <strong id="settingsLicensePlan">Free</strong>
+                </div>
+                <div>
+                  <small>This device</small>
+                  <code id="settingsLicenseDeviceId">Preparing…</code>
+                </div>
+                <button class="settings-reset-button" type="button" data-license-action="refresh">Refresh</button>
+              </div>
+              <p class="settings-license-notice" id="settingsLicenseOfflineInfo" role="status" aria-live="polite" hidden></p>
+              <p class="settings-license-notice" id="settingsLicenseNotice" hidden></p>
+
+              <section class="settings-license-panel" id="settingsLicenseQa" hidden>
+                <div class="settings-section-heading settings-section-subheading">
+                  <div>
+                    <strong>License QA</strong>
+                    <span>Available only in test builds</span>
+                  </div>
+                </div>
+                <div class="settings-license-form settings-license-qa-form">
+                  <select id="settingsLicenseQaPlan" aria-label="QA plan">
+                    <option value="free">Free</option>
+                    <option value="personal">Personal</option>
+                    <option value="club">Pro</option>
+                  </select>
+                  <input id="settingsLicenseActivationCode" type="password" autocomplete="off" placeholder="Test activation code" aria-label="Test activation code" />
+                  <button class="settings-storage-button" type="button" data-license-action="qa-apply">Apply plan</button>
+                </div>
+              </section>
+
+              <section class="settings-license-panel" id="settingsLicenseStore" hidden>
+                <div class="settings-section-heading settings-section-subheading">
+                  <div>
+                    <strong id="settingsLicenseStoreTitle">Store subscription</strong>
+                    <span id="settingsLicenseStoreStatus">Checking store subscriptions…</span>
+                  </div>
+                </div>
+                <div class="settings-license-store-products" aria-label="Store subscriptions">
+                  <button class="settings-storage-button" type="button" data-license-action="store-purchase" data-license-product="personalMonthly">Personal · Monthly</button>
+                  <button class="settings-storage-button" type="button" data-license-action="store-purchase" data-license-product="personalAnnual">Personal · Annual</button>
+                  <button class="settings-storage-button" type="button" data-license-action="store-purchase" data-license-product="proMonthly">Pro · Monthly</button>
+                  <button class="settings-storage-button" type="button" data-license-action="store-purchase" data-license-product="proAnnual">Pro · Annual</button>
+                </div>
+                <div class="settings-license-pairing settings-license-store-restore">
+                  <button class="settings-storage-button" type="button" data-license-action="store-restore">Restore purchase</button>
+                  <small>Purchases activate automatically after checkout. Restore after reinstalling or changing the store account.</small>
+                  <a class="settings-license-manage-link" href="https://account.microsoft.com/services" target="_blank" rel="noreferrer">Manage subscription</a>
+                </div>
+              </section>
+
+              <section class="settings-license-panel">
+                <div class="settings-section-heading settings-section-subheading">
+                  <div>
+                    <strong>Link this device</strong>
+                    <span>Use a code from an already licensed installation</span>
+                  </div>
+                </div>
+                <div class="settings-license-form">
+                  <input id="settingsLicenseDeviceLabel" type="text" maxlength="80" placeholder="Device name" aria-label="Device name" />
+                  <input id="settingsLicensePairInput" type="text" maxlength="80" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX" aria-label="Pairing code" />
+                  <button class="settings-storage-button" type="button" data-license-action="pair-claim">Link</button>
+                </div>
+              </section>
+
+              <section class="settings-license-panel" id="settingsLicenseSharePanel" hidden>
+                <div class="settings-section-heading settings-section-subheading">
+                  <div>
+                    <strong>Link another device</strong>
+                    <span>Create a single-use code valid for 10 minutes</span>
+                  </div>
+                </div>
+                <div class="settings-license-pairing">
+                  <button class="settings-storage-button" type="button" data-license-action="pair-create">Create code</button>
+                  <output id="settingsLicensePairCode" hidden></output>
+                  <small id="settingsLicensePairExpiry"></small>
+                </div>
+              </section>
+
+              <section class="settings-license-panel" id="settingsLicenseDevicesPanel" hidden>
+                <div class="settings-section-heading settings-section-subheading">
+                  <div>
+                    <strong>Linked devices</strong>
+                    <span id="settingsLicenseDeviceCount">0 devices</span>
+                  </div>
+                </div>
+                <div class="settings-license-devices" id="settingsLicenseDevices"></div>
+              </section>
             </div>
           </details>
           <details class="settings-section" data-settings-section="storage" data-settings-default="open" open>
@@ -837,9 +971,9 @@
 
     <script src="./icons/rink-image-data.js"></script>
     <script src="./icons/finesse-shapes.js"></script>
-    <script src="./licensing/config.js?v=e728f297cb0b"></script>
+    <script src="./licensing/config.js?v=f0674199c31b"></script>
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
-    <script src="./licensing/runtime.js?v=7e7e2992735a"></script>
-    <script src="./app.js?v=3b0ee3d9bf77"></script>
+    <script src="./licensing/runtime.js?v=056c63f218bd"></script>
+    <script src="./app.js?v=590c03496f8b"></script>
   </body>
 </html>

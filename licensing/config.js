@@ -4,5 +4,6 @@ window.__JB_DRILL_LICENSE_CONFIG__ ||= Object.freeze({
   enabled: false,
   testMode: false,
   endpoint: "",
+  microsoftStore: false,
   leasePublicKey: null,
 });
