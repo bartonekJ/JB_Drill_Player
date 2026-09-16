@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=5c10938a4e41" />
+    <link rel="stylesheet" href="./styles.css?v=d4f4802deefd" />
     <link rel="stylesheet" href="./player.css?v=849ab04ee8e6" />
   </head>
   <body>
@@ -500,6 +500,7 @@
           <button class="tactics-formation-button is-active" id="tacticsFormationButton" type="button" aria-pressed="true" title="Show formations">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 18 3-12 11 4-2 9z" /></svg>
           </button>
+          <button class="tactics-labels-button is-active" id="tacticsLabelsButton" type="button" aria-label="Hide labels" aria-pressed="true" title="Hide labels">Aa</button>
           <button class="tactics-key-nav-button" id="tacticsPrevKeyButton" type="button" aria-label="Previous keyframe" title="Previous keyframe">‹</button>
           <button class="tactics-key-nav-button" id="tacticsNextKeyButton" type="button" aria-label="Next keyframe" title="Next keyframe">›</button>
           <button class="playback-speed-button tactics-speed-button" id="tacticsSpeedButton" type="button" aria-label="Global speed">
@@ -591,6 +592,7 @@
     <div class="curve-delete-choice tactics-puck-action-choice" id="tacticsPuckActionChoice" hidden>
       <button type="button" data-puck-action-type="pass">Pass</button>
       <button type="button" data-puck-action-type="shot">Shot</button>
+      <button type="button" data-puck-action-type="drop">Drop</button>
     </div>
     <div class="curve-delete-choice tactics-preset-replace-choice" id="tacticsPresetReplaceChoice" hidden>
       <button type="button" data-preset-action="replace">Replace</button>
@@ -651,6 +653,24 @@
                 <label><input type="radio" name="appearance-theme" value="light" /><span>Light</span></label>
                 <label><input type="radio" name="appearance-theme" value="dark" /><span>Dark</span></label>
               </div>
+              <div class="settings-section-heading settings-section-subheading">
+                <div><strong>Player size</strong><span>Size of player symbols on the rink</span></div>
+                <button class="settings-reset-button" type="button" data-settings-action="reset-player-size">Reset</button>
+              </div>
+              <label class="settings-visual-scale">
+                <span>Player size</span>
+                <input id="settingsPlayerSize" type="range" min="70" max="140" step="5" value="100" />
+                <output id="settingsPlayerSizeValue">100%</output>
+              </label>
+              <div class="settings-section-heading settings-section-subheading">
+                <div><strong>Curve detail</strong><span>Scales movement patterns in both directions</span></div>
+                <button class="settings-reset-button" type="button" data-settings-action="reset-curve-detail">Reset</button>
+              </div>
+              <label class="settings-visual-scale">
+                <span>Curve detail</span>
+                <input id="settingsCurveDetail" type="range" min="60" max="150" step="5" value="100" />
+                <output id="settingsCurveDetailValue">100%</output>
+              </label>
               <div class="settings-section-heading settings-section-subheading">
                 <div>
                   <strong>Color palette</strong>
@@ -968,6 +988,6 @@
     <script src="./licensing/config.js?v=f0674199c31b"></script>
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
     <script src="./licensing/runtime.js?v=056c63f218bd"></script>
-    <script src="./app.js?v=ec2608f3880d"></script>
+    <script src="./app.js?v=a99417668195"></script>
   </body>
 </html>

@@ -1771,6 +1771,15 @@ button {
   dominant-baseline: middle;
 }
 
+.tactics-compact-label {
+  font-family: Inter, "Segoe UI", sans-serif;
+  font-weight: 900;
+  paint-order: stroke fill;
+  stroke: rgb(255 255 255 / 72%);
+  stroke-width: 1px;
+  stroke-linejoin: round;
+}
+
 .notes-panel {
   position: absolute;
   z-index: 12;
@@ -1926,7 +1935,7 @@ button {
   position: relative;
   z-index: 7;
   display: grid;
-  grid-template-columns: 44px 44px 32px 32px 56px minmax(140px, 1fr) 116px;
+  grid-template-columns: 44px 44px 40px 32px 32px 56px minmax(140px, 1fr) 116px;
   align-items: center;
   width: 100%;
   min-height: 64px;
@@ -1941,6 +1950,7 @@ button {
 
 .tactics-play-button,
 .tactics-formation-button,
+.tactics-labels-button,
 .tactics-key-nav-button {
   display: grid;
   width: 36px;
@@ -1967,6 +1977,8 @@ button {
 .tactics-formation-button svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 1.6; }
 .tactics-formation-button svg { fill: color-mix(in srgb, currentColor 22%, transparent); }
 .tactics-formation-button:not(.is-active) { opacity: .45; }
+.tactics-labels-button { font: 800 14px/1 Inter, "Segoe UI", sans-serif; }
+.tactics-labels-button:not(.is-active) { opacity: .45; }
 .tactics-pause-icon { display: none; }
 .tactics-dock.is-playing .tactics-play-icon { display: none; }
 .tactics-dock.is-playing .tactics-pause-icon { display: block; }
@@ -1974,9 +1986,9 @@ button {
 /* The tactics speed control reuses the playback speed button styles. Keep
    its grid placement local to the tactics dock so the playback dock's
    column/row rules cannot move it into an implicit grid track. */
-.tactics-dock .tactics-speed-button { grid-column: 5; grid-row: 1; justify-self: center; }
-.tactics-dock .tactics-timeline { grid-column: 6; grid-row: 1; }
-.tactics-dock .tactics-time { grid-column: 7; grid-row: 1; }
+.tactics-dock .tactics-speed-button { grid-column: 6; grid-row: 1; justify-self: center; }
+.tactics-dock .tactics-timeline { grid-column: 7; grid-row: 1; }
+.tactics-dock .tactics-time { grid-column: 8; grid-row: 1; }
 
 .tactics-timeline { position: relative; display: grid; height: 64px; align-items: center; min-width: 0; }
 .tactics-timeline input { position: relative; z-index: 2; width: 100%; margin: 0; }
@@ -2075,12 +2087,12 @@ button {
 
 .tactics-trajectory-group { mix-blend-mode: multiply; }
 .tactics-trajectory { vector-effect: non-scaling-stroke; }
-.tactics-trajectory-point { opacity: .72; }
-.tactics-trajectory-controls { pointer-events: all; }
-.tactics-trajectory-point { cursor: grab; pointer-events: all; touch-action: none; }
-.tactics-trajectory-point.is-selected { opacity: 1; stroke: #ffffff; stroke-width: 2.2; }
-.tactics-trajectory-point.is-start { stroke: #31a66f; stroke-width: 1.5; }
-.tactics-trajectory-point.is-end { stroke: #e5505f; stroke-width: 1.5; }
+
+/* Goals are scenery in Tactics; let trajectory and action handles below them receive input. */
+.workspace.is-tactics #objectLayer .scene-object[data-object-type="goal"],
+.workspace.is-tactics #objectLayer .scene-object[data-object-type="goal"] * {
+  pointer-events: none !important;
+}
 
 .tactics-action-group {
   cursor: pointer;
@@ -2593,9 +2605,10 @@ button {
   justify-content: flex-end;
 }
 
-.settings-message-duration {
+.settings-message-duration,
+.settings-visual-scale {
   display: grid;
-  grid-template-columns: auto minmax(120px, 1fr) 76px;
+  grid-template-columns: minmax(100px, auto) minmax(120px, 1fr) 76px;
   align-items: center;
   gap: 12px;
   color: var(--ink);
@@ -2603,12 +2616,14 @@ button {
   font-weight: 750;
 }
 
-.settings-message-duration input {
+.settings-message-duration input,
+.settings-visual-scale input {
   width: 100%;
   accent-color: var(--accent);
 }
 
-.settings-message-duration output {
+.settings-message-duration output,
+.settings-visual-scale output {
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -3857,11 +3872,13 @@ button {
 }
 
 @media (max-width: 520px) {
-  .settings-message-duration {
+  .settings-message-duration,
+  .settings-visual-scale {
     grid-template-columns: 1fr auto;
   }
 
-  .settings-message-duration input {
+  .settings-message-duration input,
+  .settings-visual-scale input {
     grid-column: 1 / -1;
     grid-row: 2;
   }
@@ -5357,6 +5374,7 @@ button {
 :root[data-theme] .notes-bold-button,
 :root[data-theme] .tactics-play-button,
 :root[data-theme] .tactics-formation-button,
+:root[data-theme] .tactics-labels-button,
 :root[data-theme] .tactics-key-nav-button,
 :root[data-theme] .playback-play-button,
 :root[data-theme] .playback-symmetry-button,
@@ -5374,6 +5392,7 @@ button {
 :root[data-theme] .notes-bold-button:hover,
 :root[data-theme] .tactics-play-button:hover,
 :root[data-theme] .tactics-formation-button:hover,
+:root[data-theme] .tactics-labels-button:hover,
 :root[data-theme] .tactics-key-nav-button:hover:not(:disabled),
 :root[data-theme] .playback-play-button:hover,
 :root[data-theme] .playback-symmetry-button:hover,
