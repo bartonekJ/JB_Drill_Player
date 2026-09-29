@@ -12,8 +12,8 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=d4f4802deefd" />
-    <link rel="stylesheet" href="./player.css?v=849ab04ee8e6" />
+    <link rel="stylesheet" href="./styles.css?v=c91ac9846855" />
+    <link rel="stylesheet" href="./player.css?v=dc80082f2b69" />
   </head>
   <body>
     <section class="player-welcome" id="playerWelcome" aria-labelledby="playerWelcomeTitle" hidden>
@@ -501,6 +501,9 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 18 3-12 11 4-2 9z" /></svg>
           </button>
           <button class="tactics-labels-button is-active" id="tacticsLabelsButton" type="button" aria-label="Hide labels" aria-pressed="true" title="Hide labels">Aa</button>
+          <button class="tactics-trajectories-button is-active" id="tacticsTrajectoriesButton" type="button" aria-label="Hide trajectories" aria-pressed="true" title="Hide trajectories">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18C8 18 7 6 13 6s5 10 8 10" /><circle cx="3" cy="18" r="1.5" /><circle cx="13" cy="6" r="1.5" /><circle cx="21" cy="16" r="1.5" /></svg>
+          </button>
           <button class="tactics-key-nav-button" id="tacticsPrevKeyButton" type="button" aria-label="Previous keyframe" title="Previous keyframe">‹</button>
           <button class="tactics-key-nav-button" id="tacticsNextKeyButton" type="button" aria-label="Next keyframe" title="Next keyframe">›</button>
           <button class="playback-speed-button tactics-speed-button" id="tacticsSpeedButton" type="button" aria-label="Global speed">
@@ -509,8 +512,10 @@
           </button>
           <div class="tactics-timeline">
             <div class="tactics-puck-track" id="tacticsPuckTrack" aria-label="Puck possession track"></div>
+            <div class="tactics-player-key-ticks tactics-key-track" id="tacticsPlayerKeyTicks" aria-label="Player keyframes" title="Player keyframes"></div>
             <input id="tacticsRange" type="range" min="0" max="3000" step="1" value="0" aria-label="Tactical time (frames)" />
-            <div class="tactics-key-ticks" id="tacticsKeyTicks"></div>
+            <div class="tactics-key-ticks tactics-key-track" id="tacticsKeyTicks" aria-label="Formation keyframes" title="Formation keyframes"></div>
+            <span class="timeline-playhead-guide" id="tacticsPlayheadGuide" aria-hidden="true"></span>
           </div>
           <div class="tactics-time" id="tacticsTime">
             <output id="tacticsCurrentTime">0.00 s · frame 0</output>
@@ -574,6 +579,7 @@
               value="0"
               aria-label="Playback time"
             />
+            <span class="timeline-playhead-guide" id="playbackPlayheadGuide" aria-hidden="true"></span>
           </div>
           <output class="playback-time" id="playbackTime">0.0 / 0.0 s</output>
         </div>
@@ -635,7 +641,7 @@
             <span id="settingsVersionInfo" hidden></span>
           </div>
           <div class="dialog-header-actions">
-            <button class="context-help-button" type="button" data-help-topic="fundamentals/workspace-and-exports" aria-label="Settings Help" title="Help">?</button>
+            <button class="context-help-button" type="button" data-help-topic="fundamentals/settings" aria-label="Settings Help" title="Help">?</button>
             <button class="dialog-close-button" type="button" data-settings-action="close" aria-label="Close Settings">×</button>
           </div>
         </header>
@@ -653,24 +659,24 @@
                 <label><input type="radio" name="appearance-theme" value="light" /><span>Light</span></label>
                 <label><input type="radio" name="appearance-theme" value="dark" /><span>Dark</span></label>
               </div>
-              <div class="settings-section-heading settings-section-subheading">
-                <div><strong>Player size</strong><span>Size of player symbols on the rink</span></div>
-                <button class="settings-reset-button" type="button" data-settings-action="reset-player-size">Reset</button>
+              <div class="settings-slider-setting">
+                <div class="settings-visual-scale">
+                  <label for="settingsPlayerSize">Player size</label>
+                  <input id="settingsPlayerSize" type="range" min="70" max="140" step="5" value="100" />
+                  <output id="settingsPlayerSizeValue" for="settingsPlayerSize">100%</output>
+                  <button class="settings-reset-button" type="button" data-settings-action="reset-player-size">Reset</button>
+                </div>
+                <small class="settings-control-hint">Size of player symbols on the rink.</small>
               </div>
-              <label class="settings-visual-scale">
-                <span>Player size</span>
-                <input id="settingsPlayerSize" type="range" min="70" max="140" step="5" value="100" />
-                <output id="settingsPlayerSizeValue">100%</output>
-              </label>
-              <div class="settings-section-heading settings-section-subheading">
-                <div><strong>Curve detail</strong><span>Scales movement patterns in both directions</span></div>
-                <button class="settings-reset-button" type="button" data-settings-action="reset-curve-detail">Reset</button>
+              <div class="settings-slider-setting">
+                <div class="settings-visual-scale">
+                  <label for="settingsCurveDetail">Curve detail</label>
+                  <input id="settingsCurveDetail" type="range" min="60" max="150" step="5" value="100" />
+                  <output id="settingsCurveDetailValue" for="settingsCurveDetail">100%</output>
+                  <button class="settings-reset-button" type="button" data-settings-action="reset-curve-detail">Reset</button>
+                </div>
+                <small class="settings-control-hint">Scales movement patterns in both directions.</small>
               </div>
-              <label class="settings-visual-scale">
-                <span>Curve detail</span>
-                <input id="settingsCurveDetail" type="range" min="60" max="150" step="5" value="100" />
-                <output id="settingsCurveDetailValue">100%</output>
-              </label>
               <div class="settings-section-heading settings-section-subheading">
                 <div>
                   <strong>Color palette</strong>
@@ -833,13 +839,13 @@
               </div>
             </summary>
             <div class="settings-section-body">
-              <div class="settings-section-actions">
+              <div class="settings-section-actions settings-banner-actions">
+                <button class="settings-storage-button" type="button" data-settings-action="upload-banner">Load logo</button>
                 <button class="settings-reset-button" type="button" data-settings-action="reset-banner">Reset</button>
               </div>
               <div class="settings-banner-editor" id="settingsBannerEditor">
                 <canvas class="settings-banner-preview" id="settingsBannerPreview" width="842" height="192" aria-label="Export header logo preview"></canvas>
                 <div class="settings-banner-controls">
-                  <button class="settings-storage-button" type="button" data-settings-action="upload-banner">Load logo</button>
                   <label class="settings-banner-slider">
                     <span>Crop zoom</span>
                     <input id="settingsBannerZoom" type="range" min="100" max="300" step="1" value="100" />
@@ -988,6 +994,7 @@
     <script src="./licensing/config.js?v=f0674199c31b"></script>
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
     <script src="./licensing/runtime.js?v=056c63f218bd"></script>
-    <script src="./app.js?v=a99417668195"></script>
+    
+    <script src="./app.js?v=892d2389dd91"></script>
   </body>
 </html>

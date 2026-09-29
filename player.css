@@ -202,8 +202,10 @@
 :root[data-runtime="player"] .playback-blocks,
 :root[data-runtime="player"] .playback-section-hud,
 :root[data-runtime="player"] .tactics-formation-button,
+:root[data-runtime="player"] .tactics-trajectories-button,
 :root[data-runtime="player"] .tactics-key-nav-button,
 :root[data-runtime="player"] .tactics-key-ticks,
+:root[data-runtime="player"] .tactics-player-key-ticks,
 :root[data-runtime="player"] .tactics-duration-input {
   display: none !important;
 }
@@ -257,6 +259,7 @@
   height: 30px;
   margin-inline: 5px 10px;
 }
+:root[data-runtime="player"] .playback-range { top: 0; height: 100%; }
 
 :root[data-runtime="player"] .playback-time {
   grid-column: 6;
@@ -264,7 +267,7 @@
 }
 
 :root[data-runtime="player"] .tactics-dock {
-  grid-template-columns: 44px 36px 36px 68px minmax(100px, 1fr) 116px;
+  grid-template-columns: 44px 36px 36px 68px minmax(100px, 1fr) 184px;
   grid-template-rows: 48px;
   min-height: 58px;
   padding-block: 5px;
@@ -273,6 +276,7 @@
 :root[data-runtime="player"] .tactics-play-button { grid-column: 1; grid-row: 1; }
 :root[data-runtime="player"] .tactics-dock .tactics-speed-button { grid-column: 4; grid-row: 1; }
 :root[data-runtime="player"] .tactics-dock .tactics-timeline { grid-column: 5; grid-row: 1; height: 30px; }
+:root[data-runtime="player"] .tactics-timeline input { top: 16px; height: 14px; }
 :root[data-runtime="player"] .tactics-dock .tactics-time { grid-column: 6; grid-row: 1; }
 
 :root[data-runtime="player"] .player-desktop-dock-button:not([hidden]) {
@@ -1060,6 +1064,8 @@
   appearance: none;
   background: transparent;
 }
+:root[data-runtime="player"].is-mobile-player .playback-range { top: 0; }
+:root[data-runtime="player"].is-mobile-player #tacticsRange { top: 0; }
 
 :root[data-runtime="player"].is-mobile-player .playback-range::-webkit-slider-runnable-track,
 :root[data-runtime="player"].is-mobile-player #tacticsRange::-webkit-slider-runnable-track {

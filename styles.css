@@ -16,6 +16,10 @@
   --accent: #e78600;
   --accent-strong: #c97200;
   --accent-soft: #fff0d7;
+  --timeline-surface: #f1f1f1;
+  --timeline-lane-surface: #f5f5f5;
+  --timeline-outline: #cecece;
+  --timeline-divider: #dddddd;
   --control-bg: #fffdf8;
   --control-bg-hover: #eee8dd;
   --control-bg-pressed: #e5ded2;
@@ -56,6 +60,10 @@
   --accent: #f39200;
   --accent-strong: #ffad2b;
   --accent-soft: #4b3b26;
+  --timeline-surface: #3b3b3b;
+  --timeline-lane-surface: #454545;
+  --timeline-outline: #646464;
+  --timeline-divider: #5b5b5b;
   --control-bg: #403f3a;
   --control-bg-hover: #504e47;
   --control-bg-pressed: #5a574f;
@@ -1935,12 +1943,13 @@ button {
   position: relative;
   z-index: 7;
   display: grid;
-  grid-template-columns: 44px 44px 40px 32px 32px 56px minmax(140px, 1fr) 116px;
+  grid-template-columns: 44px 40px 40px 56px minmax(140px, 1fr) 184px;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   align-items: center;
   width: 100%;
-  min-height: 64px;
+  min-height: 111px;
   gap: 5px;
-  padding: 0 12px;
+  padding: 5px 12px;
   border-top: 1px solid rgba(171, 184, 194, .82);
   background: rgba(248, 251, 253, .96);
   box-shadow: 0 -5px 18px rgb(31 45 56 / 10%);
@@ -1951,6 +1960,7 @@ button {
 .tactics-play-button,
 .tactics-formation-button,
 .tactics-labels-button,
+.tactics-trajectories-button,
 .tactics-key-nav-button {
   display: grid;
   width: 36px;
@@ -1979,27 +1989,76 @@ button {
 .tactics-formation-button:not(.is-active) { opacity: .45; }
 .tactics-labels-button { font: 800 14px/1 Inter, "Segoe UI", sans-serif; }
 .tactics-labels-button:not(.is-active) { opacity: .45; }
+.tactics-trajectories-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.tactics-trajectories-button svg circle { fill: currentColor; stroke: none; }
+.tactics-trajectories-button:not(.is-active) { opacity: .45; }
 .tactics-pause-icon { display: none; }
 .tactics-dock.is-playing .tactics-play-icon { display: none; }
 .tactics-dock.is-playing .tactics-pause-icon { display: block; }
 
-/* The tactics speed control reuses the playback speed button styles. Keep
-   its grid placement local to the tactics dock so the playback dock's
-   column/row rules cannot move it into an implicit grid track. */
-.tactics-dock .tactics-speed-button { grid-column: 6; grid-row: 1; justify-self: center; }
-.tactics-dock .tactics-timeline { grid-column: 7; grid-row: 1; }
-.tactics-dock .tactics-time { grid-column: 8; grid-row: 1; }
+/* Keep the editor controls in two rows while the timeline spans both. The
+   standalone player has its own compact grid in web-player/player.css. */
+:root:not([data-runtime="player"]) .tactics-dock .tactics-play-button { grid-column: 1; grid-row: 1; justify-self: center; }
+:root:not([data-runtime="player"]) .tactics-dock #tacticsPrevKeyButton { grid-column: 2; grid-row: 1; justify-self: center; }
+:root:not([data-runtime="player"]) .tactics-dock #tacticsNextKeyButton { grid-column: 3; grid-row: 1; justify-self: center; }
+:root:not([data-runtime="player"]) .tactics-dock .tactics-speed-button { grid-column: 4; grid-row: 1; justify-self: center; }
+:root:not([data-runtime="player"]) .tactics-dock .tactics-formation-button { grid-column: 1; grid-row: 2; justify-self: center; }
+:root:not([data-runtime="player"]) .tactics-dock .tactics-labels-button { grid-column: 2; grid-row: 2; justify-self: center; }
+:root:not([data-runtime="player"]) .tactics-dock .tactics-trajectories-button { grid-column: 3; grid-row: 2; justify-self: center; }
+:root:not([data-runtime="player"]) .tactics-dock .tactics-timeline { grid-column: 5; grid-row: 1 / 3; }
+:root:not([data-runtime="player"]) .tactics-dock .tactics-time { grid-column: 6; grid-row: 1 / 3; }
 
-.tactics-timeline { position: relative; display: grid; height: 64px; align-items: center; min-width: 0; }
-.tactics-timeline input { position: relative; z-index: 2; width: 100%; margin: 0; }
+.tactics-timeline,
+.playback-timeline {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--timeline-outline);
+  border-radius: 9px;
+  background: var(--timeline-surface);
+}
+.tactics-timeline { height: 100px; min-width: 0; }
+.tactics-timeline::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    var(--timeline-lane-surface) 0 16px,
+    var(--timeline-surface) 16px 18px,
+    var(--timeline-lane-surface) 18px 49px,
+    var(--timeline-surface) 49px 68px,
+    var(--timeline-lane-surface) 68px 100%);
+  content: "";
+  pointer-events: none;
+}
+.tactics-timeline input {
+  position: absolute;
+  z-index: 6;
+  top: 51px;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: ew-resize;
+}
+.timeline-playhead-guide {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(to bottom, rgb(45 55 61 / 48%) 0 5px, transparent 5px 9px);
+  pointer-events: none;
+}
+:root[data-theme="dark"] .timeline-playhead-guide {
+  background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 50%) 0 5px, transparent 5px 9px);
+}
 .tactics-puck-track {
   position: absolute;
   z-index: 4;
   inset: 1px 8px auto;
   height: 15px;
-  border: 1px solid rgb(122 148 73 / 30%);
-  border-radius: 5px;
-  background: rgb(127 157 67 / 8%);
   pointer-events: none;
 }
 
@@ -2029,21 +2088,57 @@ button {
   pointer-events: none;
 }
 
-.tactics-key-ticks { position: absolute; z-index: 3; inset: 17px 8px 0; overflow: hidden; pointer-events: none; }
+.tactics-key-track {
+  position: absolute;
+  z-index: 3;
+  right: 8px;
+  left: 8px;
+  height: 30px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tactics-player-key-ticks { top: 19px; }
+.tactics-key-ticks { top: 68px; }
+/* Match Animate's top scrubber in the editor. Keep the standalone player's
+   compact timeline positions unchanged. */
+:root:not([data-runtime="player"]) .tactics-timeline::before {
+  background: linear-gradient(to bottom,
+    var(--timeline-surface) 0 22px,
+    var(--timeline-lane-surface) 22px 39px,
+    var(--timeline-surface) 39px 40px,
+    var(--timeline-lane-surface) 40px 69px,
+    var(--timeline-surface) 69px 70px,
+    var(--timeline-lane-surface) 70px 100%);
+}
+:root:not([data-runtime="player"]) .tactics-timeline input { top: 2px; height: 20px; }
+:root:not([data-runtime="player"]) .tactics-puck-track { top: 24px; }
+:root:not([data-runtime="player"]) .tactics-key-track { height: 28px; }
+:root:not([data-runtime="player"]) .tactics-player-key-ticks { top: 41px; }
+:root:not([data-runtime="player"]) .tactics-key-ticks { top: 70px; }
 .tactics-key-tick {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 16px;
-  border: 2px solid rgb(255 255 255 / 92%);
-  border-radius: 7px;
+  transform: translateX(-50%);
+}
+.tactics-key-tick::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 6px;
+  border: 1px solid rgb(255 255 255 / 92%);
+  border-radius: 3px;
   transform: translateX(-50%);
   background: color-mix(in srgb, var(--tactics-key-color, #2e80b8) 82%, #fff 18%);
-  box-shadow: 0 2px 6px rgb(24 54 75 / 28%);
+  box-shadow: 0 2px 4px rgb(24 54 75 / 22%);
+  content: "";
 }
 
 .tactics-key-tick.is-active { pointer-events: auto; cursor: ew-resize; }
-.tactics-key-tick.is-muted { z-index: -1; width: 6px; opacity: .2; filter: saturate(.35); }
+.tactics-key-tick.is-muted { z-index: -1; opacity: .2; filter: saturate(.35); }
+.tactics-key-tick.is-muted::before { width: 3px; border: 0; }
 .tactics-time {
   display: flex;
   align-items: center;
@@ -2606,24 +2701,35 @@ button {
 }
 
 .settings-message-duration,
-.settings-visual-scale {
+.settings-visual-scale,
+.settings-banner-slider {
   display: grid;
-  grid-template-columns: minmax(100px, auto) minmax(120px, 1fr) 76px;
+  grid-template-columns: minmax(105px, 130px) minmax(0, 1fr) 70px auto;
   align-items: center;
   gap: 12px;
+  min-width: 0;
   color: var(--ink);
   font-size: 13px;
   font-weight: 750;
 }
 
+.settings-slider-setting {
+  display: grid;
+  gap: 5px;
+}
+
 .settings-message-duration input,
-.settings-visual-scale input {
+.settings-visual-scale input,
+.settings-banner-slider input {
   width: 100%;
+  min-width: 0;
+  margin: 0;
   accent-color: var(--accent);
 }
 
 .settings-message-duration output,
-.settings-visual-scale output {
+.settings-visual-scale output,
+.settings-banner-slider output {
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -3074,36 +3180,18 @@ button {
 
 .settings-banner-controls {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
 
-.settings-banner-slider {
-  display: grid;
-  grid-template-columns: auto minmax(80px, 1fr) 42px;
+.settings-banner-actions {
+  justify-content: space-between;
   align-items: center;
-  gap: 9px;
-  min-width: 0;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.settings-banner-slider input {
-  width: 100%;
-  accent-color: var(--accent);
-}
-
-.settings-banner-slider output {
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  text-align: right;
 }
 
 .settings-banner-editor > small {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .settings-color-slot {
@@ -3157,10 +3245,6 @@ button {
 @media (max-width: 620px) {
   .settings-palette {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .settings-banner-controls {
-    grid-template-columns: 1fr;
   }
 
   .settings-storage-body {
@@ -3873,14 +3957,28 @@ button {
 
 @media (max-width: 520px) {
   .settings-message-duration,
-  .settings-visual-scale {
-    grid-template-columns: 1fr auto;
+  .settings-visual-scale,
+  .settings-banner-slider {
+    grid-template-columns: minmax(0, 1fr) auto auto;
   }
 
   .settings-message-duration input,
-  .settings-visual-scale input {
+  .settings-visual-scale input,
+  .settings-banner-slider input {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+
+  .settings-message-duration output,
+  .settings-visual-scale output,
+  .settings-banner-slider output {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .settings-visual-scale .settings-reset-button {
+    grid-column: 3;
+    grid-row: 1;
   }
 }
 
@@ -3990,7 +4088,7 @@ button {
   grid-template-rows: repeat(4, minmax(34px, 1fr));
   align-items: center;
   width: 100%;
-  min-height: max(calc(var(--playback-lane-count, 1) * 42px + 10px), 146px);
+  min-height: max(calc(var(--playback-lane-count, 1) * 42px + 36px), 146px);
   padding: 5px 10px;
   border-top: 1px solid rgba(171, 184, 194, .82);
   background: rgba(248, 251, 253, .96);
@@ -4007,8 +4105,8 @@ button {
 
 .playback-dock.is-collapsed {
   grid-template-columns: 38px 38px 70px 30px minmax(120px, 1fr) 88px;
-  grid-template-rows: 42px;
-  min-height: 52px;
+  grid-template-rows: 70px;
+  min-height: 80px;
 }
 
 .playback-dock.is-collapsed .playback-play-button { grid-column: 1; grid-row: 1; }
@@ -4176,14 +4274,9 @@ button {
 .playback-dock.is-playing .playback-pause-icon { display: block; }
 
 .playback-timeline {
-  position: relative;
-  height: calc(var(--playback-lane-count, 1) * 42px);
+  height: calc(var(--playback-lane-count, 1) * 42px + 26px);
   max-height: 100%;
   margin-inline: 5px 10px;
-  overflow: hidden;
-  border: 1px solid #d7e0e7;
-  border-radius: 9px;
-  background: #eef3f6;
 }
 
 .playback-dock.is-collapsed .playback-blocks,
@@ -4194,7 +4287,7 @@ button {
 .playback-blocks {
   position: absolute;
   z-index: 4;
-  inset: 0 8px;
+  inset: 24px 8px 0;
   pointer-events: none;
 }
 
@@ -4257,7 +4350,7 @@ button {
   right: 0;
   left: 0;
   height: 42px;
-  border-bottom: 1px solid rgb(110 132 149 / 14%);
+  border-bottom: 1px solid var(--timeline-divider);
 }
 
 .playback-lane:last-child { border-bottom: 0; }
@@ -4611,31 +4704,51 @@ button {
 
 .playback-range {
   position: absolute;
-  inset: 0;
+  z-index: 6;
+  top: 2px;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 20px;
   margin: 0;
-  opacity: .78;
   cursor: ew-resize;
   appearance: none;
   background: transparent;
-  z-index: 3;
 }
 
-.playback-range::-webkit-slider-runnable-track {
-  height: 2px;
-  background: rgba(18, 79, 125, .2);
+.playback-range::-webkit-slider-runnable-track,
+.tactics-timeline input::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 99px;
+  background: rgb(243 146 0 / 55%);
 }
 
-.playback-range::-webkit-slider-thumb {
-  width: 4px;
-  height: calc(var(--playback-lane-count, 1) * 42px);
-  margin-top: calc(var(--playback-lane-count, 1) * -21px + 1px);
-  border: 0;
-  border-radius: 3px;
-  background: #124f7d;
-  box-shadow: 0 0 0 2px rgba(255,255,255,.7);
+.playback-range::-webkit-slider-thumb,
+.tactics-timeline input::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -6.5px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #f39200;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 32%);
   appearance: none;
+}
+
+.playback-range::-moz-range-track,
+.tactics-timeline input::-moz-range-track {
+  height: 3px;
+  border-radius: 99px;
+  background: rgb(243 146 0 / 55%);
+}
+
+.playback-range::-moz-range-thumb,
+.tactics-timeline input::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #f39200;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 32%);
 }
 
 .playback-time {
@@ -4993,8 +5106,6 @@ button {
 }
 
 :root[data-theme="dark"] .settings-section,
-:root[data-theme="dark"] .playback-timeline,
-:root[data-theme="dark"] .tactics-timeline,
 :root[data-theme="dark"] .sheet-tags-popover header > button,
 :root[data-theme="dark"] .context-help-button,
 :root[data-theme="dark"] .dialog-close-button,
@@ -5375,6 +5486,7 @@ button {
 :root[data-theme] .tactics-play-button,
 :root[data-theme] .tactics-formation-button,
 :root[data-theme] .tactics-labels-button,
+:root[data-theme] .tactics-trajectories-button,
 :root[data-theme] .tactics-key-nav-button,
 :root[data-theme] .playback-play-button,
 :root[data-theme] .playback-symmetry-button,
@@ -5393,6 +5505,7 @@ button {
 :root[data-theme] .tactics-play-button:hover,
 :root[data-theme] .tactics-formation-button:hover,
 :root[data-theme] .tactics-labels-button:hover,
+:root[data-theme] .tactics-trajectories-button:hover,
 :root[data-theme] .tactics-key-nav-button:hover:not(:disabled),
 :root[data-theme] .playback-play-button:hover,
 :root[data-theme] .playback-symmetry-button:hover,
