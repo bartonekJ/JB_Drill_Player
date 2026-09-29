@@ -92,6 +92,18 @@
   color: #99958d;
 }
 
+.player-product-link {
+  color: #aaa69d;
+  font-size: 12px;
+  text-underline-offset: 3px;
+  transition: color 140ms ease;
+}
+
+.player-product-link:hover,
+.player-product-link:focus-visible {
+  color: #f39200;
+}
+
 .player-open-button,
 .player-header-actions button {
   min-height: 40px;
