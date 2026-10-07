@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=18e75ad31907" />
+    <link rel="stylesheet" href="./styles.css?v=56634bf9e3cc" />
     <link rel="stylesheet" href="./player.css?v=921be6c2f859" />
   </head>
   <body>
@@ -224,6 +224,10 @@
             <span>Categories</span>
             <div class="tag-chip-grid" id="sheetCategoryTags"></div>
           </section>
+          <section>
+            <span>User Tags</span>
+            <div class="tag-chip-grid" id="sheetUserTags"></div>
+          </section>
           <footer>
             <button type="button" data-tags-action="clear">Clear</button>
             <button type="button" data-tags-action="library">Find in Library</button>
@@ -288,6 +292,9 @@
           aria-label="Hockey rink drawing canvas"
         >
           <defs>
+            <clipPath id="halfViewClip" clipPathUnits="userSpaceOnUse">
+              <rect x="32" y="32" width="716" height="576" />
+            </clipPath>
             <clipPath id="rinkClip">
               <rect x="40" y="40" width="1120" height="560" rx="128.8" />
             </clipPath>
@@ -866,6 +873,24 @@
               <div class="settings-rosters" id="settingsRosters"></div>
             </div>
           </details>
+          <details class="settings-section" data-settings-section="user-tags" data-settings-default="closed">
+            <summary class="settings-section-heading settings-section-summary">
+              <div><strong>User Tags</strong><span>Your tag list on this device</span></div>
+            </summary>
+            <div class="settings-section-body settings-rosters-body">
+              <p>Editing this list does not rename or remove tags already assigned to drills.</p>
+              <div class="settings-user-tag-add">
+                <input id="newUserTagName" type="text" maxlength="48" placeholder="New tag name" aria-label="New User Tag name" />
+                <button class="settings-storage-button" type="button" data-user-tag-action="add">+ Tag</button>
+              </div>
+              <div class="settings-rosters" id="settingsUserTags"></div>
+              <details class="user-tag-discovery">
+                <summary>Tags From Files</summary>
+                <div id="settingsDiscoveredTags"></div>
+                <button class="settings-storage-button" type="button" data-user-tag-action="adopt">Add Selected to My Tags</button>
+              </details>
+            </div>
+          </details>
           <details class="settings-section" data-settings-section="export-identity" data-settings-default="closed">
             <summary class="settings-section-heading settings-section-summary">
               <div>
@@ -977,8 +1002,22 @@
           </section>
           <button class="drill-library-clear" type="button" data-library-action="clear-filters">Clear filters</button>
         </div>
+        <div class="library-user-filters">
+          <section><span>User Tags</span><div class="tag-chip-grid" id="libraryUserTags"></div></section>
+          <details class="user-tag-discovery"><summary>Tags From Files <small id="libraryFileTagCount">0</small></summary><div class="tag-chip-grid" id="libraryFileTags"></div></details>
+        </div>
         <div class="drill-library-content">
-          <aside class="drill-library-results" id="drillLibraryResults" aria-label="Matching drills"></aside>
+          <div class="library-list-pane">
+            <div class="library-list-toolbar">
+              <div class="library-view-buttons" role="group" aria-label="Library view">
+                <button type="button" data-library-view="all" aria-pressed="true">All</button>
+                <button type="button" data-library-view="file" aria-pressed="false">By File</button>
+                <button type="button" data-library-view="name" aria-pressed="false">By Name</button>
+              </div>
+              <label class="library-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input id="librarySearch" type="search" placeholder="Search drills…" aria-label="Search drills by name" /></label>
+            </div>
+            <aside class="drill-library-results" id="drillLibraryResults" tabindex="0" aria-label="Matching drills"></aside>
+          </div>
           <article class="drill-library-preview">
             <div class="drill-library-preview-heading">
               <div>
@@ -1030,6 +1069,6 @@
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
     <script src="./licensing/runtime.js?v=056c63f218bd"></script>
     
-    <script src="./app.js?v=489b87bcff1f"></script>
+    <script src="./app.js?v=b0726d76362b"></script>
   </body>
 </html>
