@@ -1,0 +1,128 @@
+[
+  {
+    "source": "icons/Border.png",
+    "url": "icons/Border.7a8c7b222cdc.webp",
+    "width": 1804,
+    "height": 724,
+    "before": 1165646,
+    "after": 805172,
+    "sha256": "7a8c7b222cdc58446c5b1ca2c2c7cf9a61c5903ff920436984177c5953113be4"
+  },
+  {
+    "source": "icons/Border_Ice.png",
+    "url": "icons/Border_Ice.33b2c0f7a5b8.webp",
+    "width": 2157,
+    "height": 326,
+    "before": 1027377,
+    "after": 792462,
+    "sha256": "33b2c0f7a5b8dd0e4c925eb5a4d95c2208b6fa9961ff305c4ae81825ab6f9de5"
+  },
+  {
+    "source": "icons/Net.png",
+    "url": "icons/Net.e27598c0e4e7.webp",
+    "width": 1536,
+    "height": 1024,
+    "before": 2545323,
+    "after": 1406630,
+    "sha256": "e27598c0e4e72ee75c6e9d46b5f0a7bc78a451cce33afe6c0ee80e737ac88ce3"
+  },
+  {
+    "source": "icons/Net_Ice.png",
+    "url": "icons/Net_Ice.0826a6ac5443.webp",
+    "width": 1118,
+    "height": 540,
+    "before": 730599,
+    "after": 506514,
+    "sha256": "0826a6ac5443f6c3c71b28078f4208076d5095c3ec6be50c0175cbf1d934a24c"
+  },
+  {
+    "source": "icons/Puck.png",
+    "url": "icons/Puck.900b9a5f07e0.webp",
+    "width": 1254,
+    "height": 1254,
+    "before": 975612,
+    "after": 583514,
+    "sha256": "900b9a5f07e0a409760848b60d675e3fb1dfc32f4df8b0f12317ca8aa9f81b71"
+  },
+  {
+    "source": "icons/Pucks.png",
+    "url": "icons/Pucks.6e7bbc00858a.webp",
+    "width": 1536,
+    "height": 1024,
+    "before": 2519395,
+    "after": 1255590,
+    "sha256": "6e7bbc00858a52982df1c89e08a20302ba59262e88ca94db611a1ffb1ad15836"
+  },
+  {
+    "source": "icons/Pucks_Ice.png",
+    "url": "icons/Pucks_Ice.e49a7ce8143e.webp",
+    "width": 1368,
+    "height": 906,
+    "before": 1681681,
+    "after": 929542,
+    "sha256": "e49a7ce8143ebeec440414cc3c5a3910fd6d3c6bc568659232277861446d5c8a"
+  },
+  {
+    "source": "icons/Pylon_Ice.png",
+    "url": "icons/Pylon_Ice.0e2c43b4de12.webp",
+    "width": 877,
+    "height": 1024,
+    "before": 1188992,
+    "after": 639328,
+    "sha256": "0e2c43b4de1247ab6ce16b625476c87d0f0aaa87eef042bb8e2d04f55d97ec35"
+  },
+  {
+    "source": "icons/Stick.png",
+    "url": "icons/Stick.56db4a212dde.webp",
+    "width": 2079,
+    "height": 756,
+    "before": 609993,
+    "after": 350948,
+    "sha256": "56db4a212dde089a7b1b60d573be1644edf4440e1b7bc83f87951efd19433798"
+  },
+  {
+    "source": "icons/Stick_Ice.png",
+    "url": "icons/Stick_Ice.69b760a45a16.webp",
+    "width": 1667,
+    "height": 361,
+    "before": 285727,
+    "after": 192016,
+    "sha256": "69b760a45a162782b9bdc0fb1ed2dcf40624a6c7b04ca5b7fd98a830049f51b1"
+  },
+  {
+    "source": "icons/StickOnPylons.png",
+    "url": "icons/StickOnPylons.ac40633d5c2a.webp",
+    "width": 1774,
+    "height": 887,
+    "before": 920684,
+    "after": 548532,
+    "sha256": "ac40633d5c2a0a17ab275265f7c6ab5198d8caf378c0d200829eca346187794e"
+  },
+  {
+    "source": "icons/StickOnPylons_Ice.png",
+    "url": "icons/StickOnPylons_Ice.a704ad61a1f9.webp",
+    "width": 2164,
+    "height": 374,
+    "before": 678152,
+    "after": 450566,
+    "sha256": "a704ad61a1f96ab14e7ebfc60cb702e225ba3f1a51ba039a14567476130afa50"
+  },
+  {
+    "source": "icons/Tire.png",
+    "url": "icons/Tire.4a10d1fc4b90.webp",
+    "width": 1536,
+    "height": 1024,
+    "before": 2047288,
+    "after": 949744,
+    "sha256": "4a10d1fc4b90b8ca2d335e6d711d120ff169c610b1eacceead64ac8229a58d8f"
+  },
+  {
+    "source": "icons/Tire_Ice.png",
+    "url": "icons/Tire_Ice.3fdeff9ad449.webp",
+    "width": 1003,
+    "height": 1012,
+    "before": 1723977,
+    "after": 989146,
+    "sha256": "3fdeff9ad44907da7d30e228affbfa1f8510838a6e5dee5e554408f6dfc1f78c"
+  }
+]

@@ -1,4 +1,4 @@
-const CACHE_NAME = "jb-drill-player-v19";
+const CACHE_NAME = "jb-drill-player-v26";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -12,10 +12,7 @@ const APP_SHELL = [
   "./icons/finesse-shapes.js",
   "./icons/JB_Logo.svg",
   "./icons/app-icon-192.png",
-  "./icons/app-icon-512.png",
-  "./icons/Puck.png",
-  "./icons/Pylon_Ice.png",
-  "./icons/Net.png"
+  "./icons/app-icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
@@ -37,6 +34,18 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
+  // Content-addressed artwork is immutable. Do not redownload megabytes on
+  // every link opening; changed artwork gets a new URL during the build.
+  if (url.origin === self.location.origin && /\.[a-f0-9]{12}\.webp$/.test(url.pathname)) {
+    event.respondWith(caches.open(CACHE_NAME).then(async cache => {
+      const cached = await cache.match(event.request);
+      if (cached) return cached;
+      const response = await fetch(event.request);
+      if (response.ok) await cache.put(event.request, response.clone());
+      return response;
+    }));
+    return;
+  }
   if (url.pathname.startsWith("/api/")) {
     event.respondWith(fetch(event.request));
     return;

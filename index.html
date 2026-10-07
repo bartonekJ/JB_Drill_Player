@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/app-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="./icons/app-icon-192.png" />
-    <link rel="stylesheet" href="./styles.css?v=c91ac9846855" />
+    <link rel="stylesheet" href="./styles.css?v=18e75ad31907" />
     <link rel="stylesheet" href="./player.css?v=921be6c2f859" />
   </head>
   <body>
@@ -55,15 +55,15 @@
               <span>Defense</span>
             </button>
             <button class="tool-button object-tool" type="button" data-object="puck" aria-label="Puck">
-              <img class="object-icon sandbox-item-art puck-icon" src="./icons/Puck.png" alt="" draggable="false" />
+              
               <span>Puck</span>
             </button>
             <button class="tool-button object-tool" type="button" data-object="cone" aria-label="Pylon">
-              <img class="object-icon sandbox-item-art pylon-art" src="./icons/Pylon_Ice.png" alt="" draggable="false" />
+              
               <span>Pylon</span>
             </button>
             <button class="tool-button object-tool" type="button" data-object="goal" aria-label="Net">
-              <img class="object-icon sandbox-item-art net-art" src="./icons/Net.png" alt="" draggable="false" />
+              
               <span>Net</span>
             </button>
           </div>
@@ -207,14 +207,14 @@
         <div class="sheet-roster-popover" id="sheetRosterPopover" hidden>
           <header>
             <strong>Insert lineup</strong>
-            <button type="button" data-roster-popover-action="close" aria-label="Close roster list">×</button>
+            <button class="dialog-close-button" type="button" data-roster-popover-action="close" aria-label="Close roster list">×</button>
           </header>
           <div class="sheet-roster-list" id="sheetRosterList"></div>
         </div>
         <div class="sheet-tags-popover" id="sheetTagsPopover" hidden>
           <header>
             <strong>Drill tags</strong>
-            <button type="button" data-tags-action="close" aria-label="Close tags">×</button>
+            <button class="dialog-close-button" type="button" data-tags-action="close" aria-label="Close tags">×</button>
           </header>
           <section>
             <span>Age levels</span>
@@ -460,15 +460,48 @@
         <aside class="notes-panel" id="notesPanel" aria-label="Drill notes" hidden>
           <header>
             <strong>Notes</strong>
-            <button class="notes-close-button" id="notesCloseButton" type="button" aria-label="Close notes">×</button>
+            <button class="dialog-close-button" id="notesCloseButton" type="button" aria-label="Close notes">×</button>
           </header>
-          <div class="notes-toolbar">
-            <button class="notes-bold-button" id="notesBoldButton" type="button" aria-pressed="false" title="Bold"><strong>B</strong></button>
-            <label>
-              <span>Size</span>
-              <input id="notesSizeRange" type="range" min="12" max="28" step="1" value="16" />
-              <output id="notesSizeOutput">16</output>
-            </label>
+          <div class="notes-toolbar" role="toolbar" aria-label="Notes formatting">
+            <div class="notes-control-group notes-type-controls" role="group" aria-label="Font and size">
+              <select data-notes-command="font" aria-label="Font" title="Font (uses a system fallback if unavailable)">
+                <option data-notes-custom value="" hidden disabled>Mixed</option>
+                <option value="sans">Verdana</option>
+                <option value="serif">Times New Roman</option>
+                <option value="mono">Courier New</option>
+              </select>
+              <select data-notes-command="size" aria-label="Text size" title="Text size">
+                <option data-notes-custom value="" hidden disabled>Mixed</option>
+                <option value="14">14</option><option value="16" selected>16</option><option value="20">20</option><option value="24">24</option>
+              </select>
+            </div>
+            <div class="notes-control-group" role="group" aria-label="Text style">
+              <button type="button" id="notesBoldButton" data-notes-command="bold" aria-label="Bold" title="Bold" aria-pressed="false"><strong>B</strong></button>
+              <button class="notes-regular" type="button" data-notes-command="regular" aria-label="Regular" title="Regular" aria-pressed="true">Regular</button>
+              <button type="button" data-notes-command="italic" aria-label="Italic" title="Italic" aria-pressed="false"><em>I</em></button>
+            </div>
+            <div class="notes-control-group" role="group" aria-label="Paragraph alignment">
+              <button type="button" data-notes-command="align" data-value="left" aria-label="Align left" title="Align left" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h10M4 15h16M4 20h10"/></svg></button>
+              <button type="button" data-notes-command="align" data-value="center" aria-label="Align center" title="Align center" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M7 10h10M4 15h16M7 20h10"/></svg></button>
+              <button type="button" data-notes-command="align" data-value="right" aria-label="Align right" title="Align right" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M10 10h10M4 15h16M10 20h10"/></svg></button>
+            </div>
+            <div class="notes-control-group" role="group" aria-label="Lists">
+              <button type="button" data-notes-command="list" data-value="bullet" aria-label="Bullet list" title="Bullet list" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="4" cy="6" r="1.25"/><circle cx="4" cy="12" r="1.25"/><circle cx="4" cy="18" r="1.25"/><path d="M9 6h11M9 12h11M9 18h11"/></svg></button>
+              <button type="button" data-notes-command="list" data-value="number" aria-label="Numbered list" title="Numbered list" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h1v6M3 9h2M2.5 14c0-3 4-3 4-1 0 1-4 3-4 5h4M10 6h10M10 12h10M10 18h10"/></svg></button>
+            </div>
+            <div class="notes-control-group notes-colors" role="group" aria-label="Text color">
+              <button type="button" data-notes-command="color" data-value="auto" aria-label="Automatic text color" title="Automatic text color" aria-pressed="true">A</button>
+              <button type="button" data-notes-command="color" data-value="red" aria-label="Red text" title="Red text" aria-pressed="false"><span class="notes-swatch"></span></button>
+              <button type="button" data-notes-command="color" data-value="blue" aria-label="Blue text" title="Blue text" aria-pressed="false"><span class="notes-swatch"></span></button>
+              <button type="button" data-notes-command="color" data-value="green" aria-label="Green text" title="Green text" aria-pressed="false"><span class="notes-swatch"></span></button>
+              <button type="button" data-notes-command="color" data-value="orange" aria-label="Orange text" title="Orange text" aria-pressed="false"><span class="notes-swatch"></span></button>
+              <button type="button" data-notes-command="color" data-value="purple" aria-label="Purple text" title="Purple text" aria-pressed="false"><span class="notes-swatch"></span></button>
+            </div>
+            <div class="notes-control-group" role="group" aria-label="Notes history and formatting reset">
+              <button type="button" data-notes-command="reset" aria-label="Clear text formatting" title="Clear text formatting"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h12M10 4v13M6 17h6M15 14l6 6M21 14l-6 6"/></svg></button>
+              <button type="button" data-notes-command="undo" aria-label="Undo notes" title="Undo notes" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4-5 5 5 5M3 9h10a7 7 0 0 1 0 14"/></svg></button>
+              <button type="button" data-notes-command="redo" aria-label="Redo notes" title="Redo notes" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 4 5 5-5 5M21 9H11a7 7 0 0 0 0 14"/></svg></button>
+            </div>
           </div>
           <section class="notes-equipment" id="notesEquipment" aria-label="Equipment required">
             <span>Equipment</span>
@@ -482,6 +515,7 @@
             data-placeholder="Instructions, duration, setup…"
             spellcheck="true"
           ></div>
+          <footer class="notes-panel-footer"><button type="button" id="notesResizeHandle" aria-label="Resize notes" title="Drag left and down to resize. Arrow keys also resize."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 19 14-14M5 12v7h7M12 5h7v7"/></svg></button></footer>
         </aside>
         <div class="tactics-label-editor" id="tacticsLabelEditor" hidden>
           <input
@@ -876,7 +910,7 @@
       <div class="export-sheet-dialog-card">
         <div class="export-sheet-dialog-header">
           <strong id="exportSheetDialogTitle">Export</strong>
-          <button type="button" data-export-sheet-action="cancel" aria-label="Close">×</button>
+          <button class="dialog-close-button" type="button" data-export-sheet-action="cancel" aria-label="Close">×</button>
         </div>
         <div class="export-sheet-dialog-tools">
           <button type="button" data-export-sheet-action="all">All</button>
@@ -984,7 +1018,7 @@
           <img src="./icons/app-icon-192.png" alt="" />
           <span><strong id="helpDialogTitle">Help</strong><small>JB_Drill User Guide</small></span>
         </div>
-        <button type="button" data-help-action="close" aria-label="Close Help">×</button>
+        <button class="dialog-close-button" type="button" data-help-action="close" aria-label="Close Help">×</button>
       </header>
       <iframe id="helpFrame" title="JB_Drill Help"></iframe>
     </section>
@@ -996,6 +1030,6 @@
     <script src="./licensing/core.js?v=198dc0e27ed3"></script>
     <script src="./licensing/runtime.js?v=056c63f218bd"></script>
     
-    <script src="./app.js?v=892d2389dd91"></script>
+    <script src="./app.js?v=489b87bcff1f"></script>
   </body>
 </html>
